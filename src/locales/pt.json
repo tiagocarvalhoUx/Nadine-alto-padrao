@@ -1,0 +1,126 @@
+{
+  "nav": {
+    "about": "Sobre Nós",
+    "properties": "Propriedades",
+    "offices": "Escritórios e Agentes",
+    "franchising": "Franchising",
+    "contact": "Contacto"
+  },
+  "hero": {
+    "title": "Encontre a sua casa de sonho",
+    "subtitle": "Descubra as melhores propriedades com a NADINE",
+    "carouselTitle": "Um Mundo. Uma Pesquisa.",
+    "search": "Pesquisar",
+    "buy": "Comprar",
+    "rent": "Arrendar"
+  },
+  "search": {
+    "where": "Onde? (ex. Lisboa)",
+    "global": "Global",
+    "propertyType": "Tipo de Imóvel",
+    "minimum": "Mínimo:",
+    "maximum": "Máximo:",
+    "rooms": "Rooms:",
+    "bathrooms": "Casas de Banho:",
+    "reference": "Pesquisar por Ref",
+    "luxury": "Imóveis de Luxo - The NADINE Collection",
+    "openHouse": "Imóveis em Open House",
+    "clear": "Limpar",
+    "searchButton": "Procurar",
+    "more": "Mais"
+  },
+  "sections": {
+    "featuredListings": "LISTAGENS EM DESTAQUE",
+    "remaxCollection": "THE NADINE COLLECTION",
+    "uniqueProperties": "IMÓVEIS ÚNICOS",
+    "discoverLuxury": "DESCUBRA O LUXO",
+    "featuredDestinations": "DESTINOS EM DESTAQUE",
+    "moreDestinations": "MAIS DESTINOS"
+  },
+  "properties": {
+    "detachedFamilyHome": "Casa de Família Isolada",
+    "canada": "Canadá",
+    "usa": "EUA",
+    "modernVilla": "Vila Moderna",
+    "miamiFL": "Miami, Florida",
+    "modernApartment": "Apartamento Moderno",
+    "newYorkUSA": "Nova York, EUA",
+    "beachHouse": "Casa à Beira-Mar",
+    "malibuCA": "Malibu, Califórnia",
+    "multilevelHome": "Casa em vários níveis",
+    "montrealQC": "Montréal (Westmount), Quebeque, Canadá",
+    "villa": "Vila",
+    "pembrokeSV": "Pembroke, St Vincent, Caribe e América Central",
+    "luxuryApartment": "Apartamento de Luxo",
+    "dubaiUAE": "Dubai Marina, Dubai, Emirados Árabes",
+    "vacantLand": "Terra Desocupada",
+    "stAnneBay": "Baía St. Anne, Praslin, Seicheles",
+    "apartment": "Apartamento",
+    "pragueCZ": "Praha 5, Praha, República Checa",
+    "familyHome": "Casa de Família",
+    "vancouverBC": "Vancouver, British Columbia, Canadá",
+    "modernVillaSpain": "Villa Moderna",
+    "marbellaSpain": "Marbella, Málaga, España",
+    "desc1": "Apartamento moderno com acabamentos de luxo, localizado em uma das áreas mais valorizadas de Hamilton. Amplo living com vista panorâmica, cozinha gourmet totalmente equipada, suíte master com closet e banheira de hidromassagem.",
+    "desc2": "Villa de luxo com arquitetura contemporânea, piscina infinita com vista para o mar, jardim paisagístico, garagem para 4 carros e sistema de automação residencial completo.",
+    "desc3": "Condomínio fechado com segurança 24h, área de lazer completa com piscina, quadra poliesportiva, salão de festas e espaço gourmet. Apartamento com varanda ampla e vista privilegiada.",
+    "desc4": "Casa isolada perfeita para famílias, com amplo quintal, garagem coberta, lareira a lenha e localização próxima a escolas e comércio.",
+    "desc5": "Duplex moderno com design contemporâneo, ideal para jovens casais ou investimento. Excelente localização com fácil acesso a transporte público.",
+    "desc6": "Terreno plano com excelente potencial construtivo, localizado em área nobre e em expansão. Ideal para construção de residência ou investimento imobiliário."
+  },
+  "property": {
+    "bedrooms": "Quartos",
+    "bathrooms": "Casas de Banho",
+    "area": "Área",
+    "viewMore": "Ver Mais",
+    "viewAllPhotos": "Ver Todas as Fotos",
+    "previous": "Anterior",
+    "next": "Seguinte",
+    "backToResults": "Voltar aos Resultados",
+    "forSale": "Em Para Venda",
+    "new": "NOVO",
+    "featured": "DESTAQUE",
+    "land": "TERRENO",
+    "askPrice": "Pergunte-nos o Preço",
+    "contactMe": "Contacte-me",
+    "description": "Descrição",
+    "descriptionFallback": "Propriedade de alto padrão em localização privilegiada. Entre em contato para mais informações sobre este imóvel exclusivo."
+  },
+  "propertyTypes": {
+    "apartment": "Apartamento",
+    "house": "Casa",
+    "villa": "Vila",
+    "condo": "Condomínio",
+    "land": "Terreno",
+    "duplex": "Duplex"
+  },
+  "sort": {
+    "recent": "Listagens Mais Recentes",
+    "priceAsc": "Preço (crescente)",
+    "priceDesc": "Preço (decrescente)"
+  },
+  "messages": {
+    "noProperties": "Nenhuma propriedade encontrada",
+    "adjustFilters": "Tente ajustar seus filtros de busca"
+  },
+  "footer": {
+    "description": "Imobiliária de alto padrão especializada em propriedades exclusivas e de luxo.",
+    "quickLinks": "Links Rápidos",
+    "aboutUs": "Sobre Nós",
+    "agents": "Agentes",
+    "blog": "Blog",
+    "services": "Serviços",
+    "buy": "Comprar",
+    "sell": "Vender",
+    "rent": "Arrendar",
+    "evaluation": "Avaliação",
+    "contact": "Contacto",
+    "followUs": "Siga-nos",
+    "rights": "Todos os direitos reservados."
+  },
+  "explore": {
+    "byPrice": "Explore Por Preço",
+    "byLifestyle": "Explore por Estilo de Vida",
+    "byLocation": "Explore por Local"
+  }
+}

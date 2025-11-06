@@ -15,7 +15,7 @@
               <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                 <path d="M10 20C4.477 20 0 15.523 0 10S4.477 0 10 0s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 100-16 8 8 0 000 16z"/>
               </svg>
-              <span>Global</span>
+              <span>{{ $t('search.global') }}</span>
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
               </svg>
@@ -27,7 +27,7 @@
             <input
               type="text"
               v-model="searchQuery"
-              placeholder="Onde? (ex. Lisboa)"
+              :placeholder="$t('search.where')"
               class="w-full px-6 py-3 rounded-full text-gray-800 focus:outline-none focus:ring-2 focus:ring-nadine-bronze"
             />
           </div>
@@ -37,7 +37,7 @@
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
-            <span class="hidden md:inline">Pesquisar</span>
+            <span class="hidden md:inline">{{ $t('search.searchButton') }}</span>
           </button>
 
           <!-- Mais -->
@@ -45,7 +45,7 @@
             @click="showAdvancedFilters = !showAdvancedFilters"
             class="text-white hover:text-gray-200 transition-colors flex flex-col items-center"
           >
-            <span class="text-sm">Mais</span>
+            <span class="text-sm">{{ $t('search.more') }}</span>
             <svg
               class="w-5 h-5 transition-transform duration-300"
               :class="{ 'rotate-180': showAdvancedFilters }"
@@ -68,12 +68,12 @@
                 v-model="propertyType"
                 class="px-4 py-3 border border-gray-300 rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-nadine-bronze"
               >
-                <option value="">Tipo de Imóvel</option>
-                <option value="apartment">Apartamento</option>
-                <option value="house">Casa</option>
-                <option value="villa">Vila</option>
-                <option value="condo">Condomínio</option>
-                <option value="land">Terreno</option>
+                <option value="">{{ $t('search.propertyType') }}</option>
+                <option value="apartment">{{ $t('propertyTypes.apartment') }}</option>
+                <option value="house">{{ $t('propertyTypes.house') }}</option>
+                <option value="villa">{{ $t('propertyTypes.villa') }}</option>
+                <option value="condo">{{ $t('propertyTypes.condo') }}</option>
+                <option value="land">{{ $t('propertyTypes.land') }}</option>
               </select>
 
               <!-- Mínimo (Preço) -->
@@ -138,7 +138,7 @@
               <input
                 v-model="reference"
                 type="text"
-                placeholder="Pesquisar por Ref"
+                :placeholder="$t('search.reference')"
                 class="flex-1 px-4 py-3 border border-gray-300 rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-nadine-bronze"
               />
 
@@ -150,7 +150,7 @@
                     type="checkbox"
                     class="w-4 h-4 text-nadine-bronze border-gray-300 rounded focus:ring-nadine-bronze"
                   />
-                  <span class="text-sm">Imóveis de Luxo - The NADINE Collection</span>
+                  <span class="text-sm">{{ $t('search.luxury') }}</span>
                 </label>
 
                 <label class="flex items-center space-x-2 text-gray-700 cursor-pointer">
@@ -159,7 +159,7 @@
                     type="checkbox"
                     class="w-4 h-4 text-nadine-bronze border-gray-300 rounded focus:ring-nadine-bronze"
                   />
-                  <span class="text-sm">Imóveis em Open House</span>
+                  <span class="text-sm">{{ $t('search.openHouse') }}</span>
                 </label>
               </div>
             </div>
@@ -170,13 +170,13 @@
                 @click="clearFilters"
                 class="px-8 py-3 border-2 border-gray-300 text-gray-700 rounded-md font-semibold hover:bg-gray-50 transition-colors"
               >
-                Limpar
+                {{ $t('search.clear') }}
               </button>
               <button
                 @click="applyFilters"
                 class="px-8 py-3 bg-nadine-bronze text-white rounded-md font-semibold hover:bg-nadine-bronze-dark transition-colors shadow-md hover:shadow-lg"
               >
-                Procurar
+                {{ $t('search.searchButton') }}
               </button>
             </div>
           </div>
@@ -189,7 +189,7 @@
       <!-- Header com Título e Ordenação -->
       <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
         <h1 class="text-3xl md:text-4xl font-bold text-gray-900">
-          Em Para Venda
+          {{ $t('property.forSale') }}
         </h1>
 
         <!-- Dropdown de Ordenação -->
@@ -214,21 +214,21 @@
               class="w-full text-left px-4 py-3 hover:bg-gray-100 transition-colors text-gray-700"
               :class="{ 'bg-nadine-beige-light text-nadine-bronze font-semibold': sortOption === 'recent' }"
             >
-              Listagens Mais Recentes
+              {{ $t('sort.recent') }}
             </button>
             <button
               @click="sortBy('price-asc')"
               class="w-full text-left px-4 py-3 hover:bg-gray-100 transition-colors text-gray-700"
               :class="{ 'bg-nadine-beige-light text-nadine-bronze font-semibold': sortOption === 'price-asc' }"
             >
-              Preço (crescente)
+              {{ $t('sort.priceAsc') }}
             </button>
             <button
               @click="sortBy('price-desc')"
               class="w-full text-left px-4 py-3 hover:bg-gray-100 transition-colors text-gray-700"
               :class="{ 'bg-nadine-beige-light text-nadine-bronze font-semibold': sortOption === 'price-desc' }"
             >
-              Preço (decrescente)
+              {{ $t('sort.priceDesc') }}
             </button>
           </div>
         </div>
@@ -272,13 +272,13 @@
 
             <!-- Preço -->
             <p class="text-2xl font-bold text-nadine-bronze mb-3">
-              {{ formatPrice(property.price) }}
+              {{ formatPropertyPrice(property) }}
             </p>
 
             <!-- Detalhes -->
             <div class="flex items-center gap-4 text-sm text-gray-600 mb-3">
-              <span v-if="property.bedrooms">{{ property.bedrooms }} Quartos</span>
-              <span v-if="property.bathrooms">{{ property.bathrooms }} Casas de Banho</span>
+              <span v-if="property.bedrooms">{{ property.bedrooms }} {{ $t('property.bedrooms') }}</span>
+              <span v-if="property.bathrooms">{{ property.bathrooms }} {{ $t('property.bathrooms') }}</span>
             </div>
 
             <!-- Localização -->
@@ -298,8 +298,8 @@
         <svg class="w-24 h-24 mx-auto text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
         </svg>
-        <h3 class="text-2xl font-bold text-gray-900 mb-2">Nenhuma propriedade encontrada</h3>
-        <p class="text-gray-600">Tente ajustar seus filtros de busca</p>
+        <h3 class="text-2xl font-bold text-gray-900 mb-2">{{ $t('messages.noProperties') }}</h3>
+        <p class="text-gray-600">{{ $t('messages.adjustFilters') }}</p>
       </div>
     </div>
 
@@ -310,12 +310,16 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import Navbar from '../components/Navbar.vue'
 import Footer from '../components/Footer.vue'
 import { usePropertyStore } from '../stores/propertyStore'
+import { useCurrencyStore } from '../stores/currencyStore'
 
 const router = useRouter()
 const propertyStore = usePropertyStore()
+const currencyStore = useCurrencyStore()
+const { t } = useI18n()
 
 const searchQuery = ref('')
 const showSortDropdown = ref(false)
@@ -328,6 +332,7 @@ const properties = ref([
     id: 1,
     title: 'Apartamento Moderno',
     price: 850000,
+    currency: 'CAD',
     bedrooms: 3,
     bathrooms: 2,
     location: 'Hamilton, Canadá',
@@ -339,6 +344,7 @@ const properties = ref([
     id: 2,
     title: 'Villa Luxuosa',
     price: 2500000,
+    currency: 'EUR',
     bedrooms: 5,
     bathrooms: 4,
     location: 'Lisboa, Portugal',
@@ -350,6 +356,7 @@ const properties = ref([
     id: 3,
     title: 'Condomínio Premium',
     price: 1200000,
+    currency: 'EUR',
     bedrooms: 4,
     bathrooms: 3,
     location: 'Porto, Portugal',
@@ -360,6 +367,7 @@ const properties = ref([
     id: 4,
     title: 'Casa de Família Isolada',
     price: 699900,
+    currency: 'CAD',
     bedrooms: 3,
     bathrooms: 2,
     location: 'Hamilton, Canadá',
@@ -370,6 +378,7 @@ const properties = ref([
     id: 5,
     title: 'Duplex',
     price: 329900,
+    currency: 'CAD',
     bedrooms: 2,
     bathrooms: 1,
     location: 'Victoriaville, Canadá',
@@ -380,6 +389,7 @@ const properties = ref([
     id: 6,
     title: 'Terra Desocupada',
     price: 99500,
+    currency: 'USD',
     bedrooms: 0,
     bathrooms: 0,
     location: 'Madera, Estados Unidos',
@@ -392,13 +402,13 @@ const properties = ref([
 const currentSort = computed(() => {
   switch (sortOption.value) {
     case 'recent':
-      return 'Listagens Mais Recentes'
+      return t('sort.recent')
     case 'price-asc':
-      return 'Preço (crescente)'
+      return t('sort.priceAsc')
     case 'price-desc':
-      return 'Preço (decrescente)'
+      return t('sort.priceDesc')
     default:
-      return 'Listagens Mais Recentes'
+      return t('sort.recent')
   }
 })
 
@@ -501,6 +511,20 @@ const formatPrice = (price) => {
     return `${(price / 1000).toFixed(0)}.${((price % 1000) / 100).toFixed(0)}00 €`
   }
   return `${price.toLocaleString('pt-PT')} €`
+}
+
+const formatPropertyPrice = (property) => {
+  if (!property || property.price == null) return '—'
+
+  // Converter o preço para a moeda selecionada
+  const convertedAmount = currencyStore.convertCurrency(
+    property.price,
+    property.currency || 'USD',
+    currencyStore.selectedCurrency
+  )
+
+  // Formatar com o símbolo da moeda selecionada
+  return currencyStore.formatCurrency(convertedAmount, currencyStore.selectedCurrency)
 }
 
 const toggleFavorite = (id) => {

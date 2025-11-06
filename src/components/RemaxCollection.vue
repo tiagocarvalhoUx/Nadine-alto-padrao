@@ -24,9 +24,9 @@
           />
           <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-70"></div>
           <div class="absolute bottom-0 left-0 right-0 p-6 text-white">
-            <h3 class="text-xl font-semibold mb-2">{{ property.title }}</h3>
-            <p class="text-sm mb-2">{{ property.location }}</p>
-            <p class="text-lg font-bold">{{ property.price }}</p>
+            <h3 class="text-xl font-semibold mb-2">{{ $t(property.titleKey) }}</h3>
+            <p class="text-sm mb-2">{{ $t(property.locationKey) }}</p>
+            <p class="text-lg font-bold">{{ formatPropertyPrice(property) }}</p>
           </div>
         </div>
       </div>
@@ -34,7 +34,7 @@
       <!-- Button -->
       <div class="text-center">
         <button class="border-2 border-white text-white px-10 py-4 rounded-md font-semibold hover:bg-white hover:text-remax-darkBlue transition-all text-lg">
-          DESCUBRA O LUXO
+          {{ $t('sections.discoverLuxury') }}
         </button>
       </div>
     </div>
@@ -43,25 +43,48 @@
 
 <script setup>
 import { ref } from 'vue'
+import { usePropertyStore } from '../stores/propertyStore'
+import { useCurrencyStore } from '../stores/currencyStore'
+
+const store = usePropertyStore()
+const currencyStore = useCurrencyStore()
 
 const properties = ref([
   {
     image: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800',
-    title: 'Casa em vários níveis',
-    location: 'Montréal (Westmount), Quebeque, Canadá',
-    price: '18.500.000 CDN / 13.163.984,72 USD'
+    titleKey: 'properties.multilevelHome',
+    locationKey: 'properties.montrealQC',
+    priceAmount: 18500000,
+    priceCurrency: 'CAD'
   },
   {
     image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800',
-    title: 'Vila',
-    location: 'Pembroke, St Vincent, Caribe e América Central',
-    price: '3.000.000 USD'
+    titleKey: 'properties.villa',
+    locationKey: 'properties.pembrokeSV',
+    priceAmount: 3000000,
+    priceCurrency: 'USD'
   },
   {
     image: 'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=800',
-    title: 'Apartamento de Luxo',
-    location: 'Dubai Marina, Dubai, Emirados Árabes',
-    price: '4.500.000 USD'
+    titleKey: 'properties.luxuryApartment',
+    locationKey: 'properties.dubaiUAE',
+    priceAmount: 4500000,
+    priceCurrency: 'USD'
   }
 ])
+
+function formatPropertyPrice(property) {
+  if (!property || property.priceAmount == null) return property.price || '—'
+
+  // Converter o preço para a moeda selecionada
+  const convertedAmount = currencyStore.convertCurrency(
+    property.priceAmount,
+    property.priceCurrency,
+    currencyStore.selectedCurrency
+  )
+
+  // Formatar com o símbolo da moeda selecionada
+  return currencyStore.formatCurrency(convertedAmount, currencyStore.selectedCurrency)
+}
 </script>
+ 

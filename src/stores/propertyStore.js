@@ -196,13 +196,14 @@ export const usePropertyStore = defineStore('property', () => {
     return properties.value.find(prop => prop.id === id)
   }
 
+
+
   return {
     // State
     searchFilters,
     properties,
     searchResults,
     isSearching,
-
     // Getters
     filteredProperties,
 

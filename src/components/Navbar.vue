@@ -8,33 +8,48 @@
 
       <!-- Menu Desktop -->
       <div class="hidden lg:flex items-center space-x-8">
-        <router-link to="/" class="nav-link font-medium">Sobre Nós</router-link>
-        <router-link to="/propriedades" class="nav-link font-medium">Propriedades</router-link>
-        <a href="#" class="nav-link font-medium">Escritórios e Agentes</a>
-        <a href="#" class="nav-link font-medium">Franchising</a>
-        <a href="#" class="nav-link font-medium">Contacto</a>
+        <router-link to="/" class="nav-link font-medium">{{ $t('nav.about') }}</router-link>
+        <router-link to="/propriedades" class="nav-link font-medium">{{ $t('nav.properties') }}</router-link>
+        <a href="#" class="nav-link font-medium">{{ $t('nav.offices') }}</a>
+        <a href="#" class="nav-link font-medium">{{ $t('nav.franchising') }}</a>
+        <a href="#" class="nav-link font-medium">{{ $t('nav.contact') }}</a>
       </div>
 
-      <!-- Dropdowns de Idioma e Moeda (Desktop) -->
-      <div class="hidden lg:flex items-center space-x-4">
+      <!-- Language & Currency Selectors (Desktop) -->
+      <div class="hidden lg:flex items-center space-x-4 ml-8">
         <!-- Language Selector -->
         <div class="relative">
           <button
             @click="toggleLanguageDropdown"
             class="nav-link flex items-center space-x-1"
           >
-            <span>Português</span>
+            <span>{{ languageStore.currentLanguage?.name.split(' - ')[0] || 'Português' }}</span>
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
             </svg>
           </button>
           <div
             v-if="showLanguageDropdown"
-            class="absolute right-0 mt-2 w-48 bg-white text-gray-800 rounded-lg shadow-lg py-2"
+            class="absolute right-0 mt-2 w-64 bg-white text-gray-800 rounded-lg shadow-lg py-2 z-50 max-h-96 overflow-y-auto"
           >
-            <a href="#" class="block px-4 py-2 hover:bg-nadine-beige-light">Português</a>
-            <a href="#" class="block px-4 py-2 hover:bg-nadine-beige-light">English</a>
-            <a href="#" class="block px-4 py-2 hover:bg-nadine-beige-light">Español</a>
+            <button
+              v-for="language in languageStore.availableLanguages"
+              :key="language.code"
+              @click="selectLanguage(language.code)"
+              class="w-full text-left px-4 py-2 hover:bg-nadine-beige-light flex items-center space-x-3"
+              :class="{ 'bg-nadine-beige-light': languageStore.selectedLanguage === language.code }"
+            >
+              <span class="text-2xl">{{ language.flag }}</span>
+              <span>{{ language.name }}</span>
+            </button>
+            <div class="border-t border-gray-200 my-2"></div>
+            <button
+              @click="showMoreLanguages"
+              class="w-full text-left px-4 py-2 text-white font-semibold"
+              style="background-color: #C71E1E;"
+            >
+              View More
+            </button>
           </div>
         </div>
 
@@ -44,44 +59,31 @@
             @click="toggleCurrencyDropdown"
             class="nav-link flex items-center space-x-1"
           >
-            <span>USD</span>
+            <span>{{ currencyStore.selectedCurrency }}</span>
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
             </svg>
           </button>
           <div
             v-if="showCurrencyDropdown"
-            class="absolute right-0 mt-2 w-56 bg-white text-gray-800 rounded-lg shadow-lg py-2 max-h-96 overflow-y-auto"
+            class="absolute right-0 mt-2 w-64 bg-white text-gray-800 rounded-lg shadow-lg py-2 z-50"
           >
-            <a href="#" class="block px-4 py-2 hover:bg-nadine-beige-light flex items-center space-x-2">
-              <span>🇨🇦</span>
-              <span>Canadian Dollar</span>
-            </a>
-            <a href="#" class="block px-4 py-2 hover:bg-nadine-beige-light flex items-center space-x-2">
-              <span>🇨🇳</span>
-              <span>Chinese Renminbi</span>
-            </a>
-            <a href="#" class="block px-4 py-2 hover:bg-nadine-beige-light flex items-center space-x-2">
-              <span>🇪🇺</span>
-              <span>Euro</span>
-            </a>
-            <a href="#" class="block px-4 py-2 hover:bg-nadine-beige-light flex items-center space-x-2">
-              <span>🇬🇧</span>
-              <span>British Pound</span>
-            </a>
-            <a href="#" class="block px-4 py-2 hover:bg-nadine-beige-light flex items-center space-x-2">
-              <span>🇮🇳</span>
-              <span>Indian Rupees</span>
-            </a>
-            <a href="#" class="block px-4 py-2 hover:bg-nadine-beige-light flex items-center space-x-2">
-              <span>🇲🇽</span>
-              <span>Mexican Pesos</span>
-            </a>
-            <a href="#" class="block px-4 py-2 hover:bg-nadine-beige-light flex items-center space-x-2">
-              <span>🇺🇸</span>
-              <span>US Dollar</span>
-            </a>
-            <button class="w-full mt-2 bg-nadine-bronze text-white py-2 hover:bg-nadine-bronze-dark transition-colors">
+            <button
+              v-for="currency in currencyStore.availableCurrencies"
+              :key="currency.code"
+              @click="selectCurrency(currency.code)"
+              class="w-full text-left px-4 py-2 hover:bg-nadine-beige-light flex items-center space-x-3"
+              :class="{ 'bg-nadine-beige-light': currencyStore.selectedCurrency === currency.code }"
+            >
+              <span class="text-2xl">{{ currency.flag }}</span>
+              <span>{{ currency.name }}</span>
+            </button>
+            <div class="border-t border-gray-200 my-2"></div>
+            <button
+              @click="showAllCurrencies"
+              class="w-full text-left px-4 py-2 text-white font-semibold"
+              style="background-color: #C71E1E;"
+            >
               View More
             </button>
           </div>
@@ -145,60 +147,69 @@
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
-              <span>Sobre Nós</span>
+              <span>{{ $t('nav.about') }}</span>
             </router-link>
             <router-link to="/propriedades" @click="closeMobileMenu" class="mobile-nav-link">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
               </svg>
-              <span>Propriedades</span>
+              <span>{{ $t('nav.properties') }}</span>
             </router-link>
             <a href="#" class="mobile-nav-link">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
               </svg>
-              <span>Escritórios e Agentes</span>
+              <span>{{ $t('nav.offices') }}</span>
             </a>
             <a href="#" class="mobile-nav-link">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
               </svg>
-              <span>Franchising</span>
+              <span>{{ $t('nav.franchising') }}</span>
             </a>
             <a href="#" class="mobile-nav-link">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
               </svg>
-              <span>Contacto</span>
+              <span>{{ $t('nav.contact') }}</span>
             </a>
           </nav>
 
           <!-- Divisor -->
           <div class="my-6 border-t border-gray-200"></div>
 
-          <!-- Seletores Mobile -->
+          <!-- Language & Currency Selector Mobile -->
           <div class="space-y-4">
-            <!-- Idioma Mobile -->
             <div>
               <label class="block text-sm font-semibold text-gray-700 mb-2">Idioma</label>
-              <select class="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-nadine-bronze">
-                <option>Português</option>
-                <option>English</option>
-                <option>Español</option>
+              <select
+                v-model="languageStore.selectedLanguage"
+                @change="handleLanguageChangeMobile"
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-nadine-bronze"
+              >
+                <option
+                  v-for="language in languageStore.availableLanguages"
+                  :key="language.code"
+                  :value="language.code"
+                >
+                  {{ language.flag }} {{ language.name }}
+                </option>
               </select>
             </div>
-
-            <!-- Moeda Mobile -->
             <div>
               <label class="block text-sm font-semibold text-gray-700 mb-2">Moeda</label>
-              <select class="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-nadine-bronze">
-                <option>🇺🇸 US Dollar</option>
-                <option>🇪🇺 Euro</option>
-                <option>🇬🇧 British Pound</option>
-                <option>🇨🇦 Canadian Dollar</option>
-                <option>🇨🇳 Chinese Renminbi</option>
-                <option>🇮🇳 Indian Rupees</option>
-                <option>🇲🇽 Mexican Pesos</option>
+              <select
+                v-model="currencyStore.selectedCurrency"
+                @change="handleCurrencyChange"
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-nadine-bronze"
+              >
+                <option
+                  v-for="currency in currencyStore.availableCurrencies"
+                  :key="currency.code"
+                  :value="currency.code"
+                >
+                  {{ currency.flag }} {{ currency.name }}
+                </option>
               </select>
             </div>
           </div>
@@ -209,8 +220,17 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue'
+import { ref, watch, onMounted } from 'vue'
+import { useI18n } from 'vue-i18n'
 import NadineLogo from './NadineLogo.vue'
+import { usePropertyStore } from '../stores/propertyStore'
+import { useCurrencyStore } from '../stores/currencyStore'
+import { useLanguageStore } from '../stores/languageStore'
+
+const { locale } = useI18n()
+const store = usePropertyStore()
+const currencyStore = useCurrencyStore()
+const languageStore = useLanguageStore()
 
 const showLanguageDropdown = ref(false)
 const showCurrencyDropdown = ref(false)
@@ -218,12 +238,44 @@ const showMobileMenu = ref(false)
 
 const toggleLanguageDropdown = () => {
   showLanguageDropdown.value = !showLanguageDropdown.value
-  showCurrencyDropdown.value = false
+  showCurrencyDropdown.value = false // Fechar o outro dropdown
 }
 
 const toggleCurrencyDropdown = () => {
   showCurrencyDropdown.value = !showCurrencyDropdown.value
+  showLanguageDropdown.value = false // Fechar o outro dropdown
+}
+
+const selectLanguage = (languageCode) => {
+  languageStore.setLanguage(languageCode)
+  locale.value = languageCode // Atualizar o idioma do i18n
   showLanguageDropdown.value = false
+}
+
+const handleLanguageChangeMobile = () => {
+  locale.value = languageStore.selectedLanguage
+  console.log('Idioma alterado para:', languageStore.selectedLanguage)
+}
+
+const showMoreLanguages = () => {
+  // Pode abrir um modal ou página com mais idiomas
+  alert('Funcionalidade "View More" - Adicionar mais idiomas')
+  showLanguageDropdown.value = false
+}
+
+const selectCurrency = (currencyCode) => {
+  currencyStore.setCurrency(currencyCode)
+  showCurrencyDropdown.value = false
+}
+
+const handleCurrencyChange = () => {
+  console.log('Moeda alterada para:', currencyStore.selectedCurrency)
+}
+
+const showAllCurrencies = () => {
+  // Pode abrir um modal ou página com mais moedas
+  alert('Funcionalidade "View More" - Adicionar mais moedas')
+  showCurrencyDropdown.value = false
 }
 
 const toggleMobileMenu = () => {
@@ -241,6 +293,15 @@ watch(showMobileMenu, (newVal) => {
   } else {
     document.body.style.overflow = ''
   }
+})
+
+// Inicializar os stores
+onMounted(async () => {
+  languageStore.initialize()
+  await currencyStore.initialize()
+
+  // Sincronizar o idioma do i18n com o store
+  locale.value = languageStore.selectedLanguage
 })
 </script>
 

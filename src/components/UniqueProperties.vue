@@ -3,7 +3,7 @@
     <div class="container mx-auto">
       <!-- Title -->
       <h2 class="text-4xl md:text-5xl font-bold text-remax-blue mb-12">
-        IMÓVEIS ÚNICOS
+        {{ $t('sections.uniqueProperties') }}
       </h2>
 
       <!-- Carousel Container -->
@@ -27,10 +27,9 @@
                 />
                 <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80"></div>
                 <div class="absolute bottom-0 left-0 right-0 p-6 text-white">
-                  <h3 class="text-xl font-semibold mb-2">{{ property.title }}</h3>
-                  <p class="text-sm mb-1">{{ property.location }}</p>
-                  <p class="text-sm mb-2">{{ property.description }}</p>
-                  <p class="text-lg font-bold">{{ property.price }}</p>
+                  <h3 class="text-xl font-semibold mb-2">{{ $t(property.titleKey) }}</h3>
+                  <p class="text-sm mb-1">{{ $t(property.locationKey) }}</p>
+                  <p class="text-lg font-bold">{{ formatPropertyPrice(property) }}</p>
                 </div>
                 <div class="absolute top-4 right-4">
                   <div class="bg-remax-red text-white px-4 py-2 rounded-md font-semibold">
@@ -66,36 +65,62 @@
 
 <script setup>
 import { ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { usePropertyStore } from '../stores/propertyStore'
+import { useCurrencyStore } from '../stores/currencyStore'
+
+const { t } = useI18n()
+const store = usePropertyStore()
+const currencyStore = useCurrencyStore()
 
 const currentSlide = ref(0)
 
 const properties = ref([
   {
     image: 'https://images.unsplash.com/photo-1600607687644-c7171b42498b?w=800',
-    title: 'Terra Desocupada',
-    location: 'Baía St. Anne, Praslin, Seicheles',
-    description: 'Pergunte-nos o Preço',
-    price: ''
+    titleKey: 'properties.vacantLand',
+    locationKey: 'properties.stAnneBay',
+    priceAmount: null,
+    priceCurrency: null
   },
   {
     image: 'https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=800',
-    title: 'Apartamento',
-    location: 'Praha 5, Praha, República Checa',
-    price: '45.000.000 CZK / 2.132.994,66 USD'
+    titleKey: 'properties.apartment',
+    locationKey: 'properties.pragueCZ',
+    priceAmount: 45000000,
+    priceCurrency: 'EUR'
   },
   {
     image: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800',
-    title: 'Casa de Família',
-    location: 'Vancouver, British Columbia, Canadá',
-    price: '8.500.000 CAD'
+    titleKey: 'properties.familyHome',
+    locationKey: 'properties.vancouverBC',
+    priceAmount: 8500000,
+    priceCurrency: 'CAD'
   },
   {
     image: 'https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=800',
-    title: 'Villa Moderna',
-    location: 'Marbella, Málaga, España',
-    price: '6.200.000 EUR'
+    titleKey: 'properties.modernVillaSpain',
+    locationKey: 'properties.marbellaSpain',
+    priceAmount: 6200000,
+    priceCurrency: 'EUR'
   }
 ])
+
+function formatPropertyPrice(property) {
+  if (!property || property.priceAmount == null) {
+    return t('property.askPrice')
+  }
+
+  // Converter o preço para a moeda selecionada
+  const convertedAmount = currencyStore.convertCurrency(
+    property.priceAmount,
+    property.priceCurrency,
+    currencyStore.selectedCurrency
+  )
+
+  // Formatar com o símbolo da moeda selecionada
+  return currencyStore.formatCurrency(convertedAmount, currencyStore.selectedCurrency)
+}
 
 const nextSlide = () => {
   if (currentSlide.value < properties.value.length - 3) {

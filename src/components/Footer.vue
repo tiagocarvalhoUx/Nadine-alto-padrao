@@ -8,35 +8,35 @@
             <NadineLogo />
           </div>
           <p class="text-gray-700 text-sm leading-relaxed">
-            Imobiliária de alto padrão especializada em propriedades exclusivas e de luxo.
+            {{ $t('footer.description') }}
           </p>
         </div>
 
         <!-- Links Rápidos -->
         <div>
-          <h4 class="text-lg font-semibold mb-4 text-nadine-bronze">Links Rápidos</h4>
+          <h4 class="text-lg font-semibold mb-4 text-nadine-bronze">{{ $t('footer.quickLinks') }}</h4>
           <ul class="space-y-2 text-gray-700 text-sm">
-            <li><a href="#" class="hover:text-nadine-bronze transition-colors">Sobre Nós</a></li>
-            <li><a href="#" class="hover:text-nadine-bronze transition-colors">Propriedades</a></li>
-            <li><a href="#" class="hover:text-nadine-bronze transition-colors">Agentes</a></li>
-            <li><a href="#" class="hover:text-nadine-bronze transition-colors">Blog</a></li>
+            <li><a href="#" class="hover:text-nadine-bronze transition-colors">{{ $t('footer.aboutUs') }}</a></li>
+            <li><a href="#" class="hover:text-nadine-bronze transition-colors">{{ $t('nav.properties') }}</a></li>
+            <li><a href="#" class="hover:text-nadine-bronze transition-colors">{{ $t('footer.agents') }}</a></li>
+            <li><a href="#" class="hover:text-nadine-bronze transition-colors">{{ $t('footer.blog') }}</a></li>
           </ul>
         </div>
 
         <!-- Serviços -->
         <div>
-          <h4 class="text-lg font-semibold mb-4 text-nadine-bronze">Serviços</h4>
+          <h4 class="text-lg font-semibold mb-4 text-nadine-bronze">{{ $t('footer.services') }}</h4>
           <ul class="space-y-2 text-gray-700 text-sm">
-            <li><a href="#" class="hover:text-nadine-bronze transition-colors">Comprar</a></li>
-            <li><a href="#" class="hover:text-nadine-bronze transition-colors">Vender</a></li>
-            <li><a href="#" class="hover:text-nadine-bronze transition-colors">Arrendar</a></li>
-            <li><a href="#" class="hover:text-nadine-bronze transition-colors">Avaliação</a></li>
+            <li><a href="#" class="hover:text-nadine-bronze transition-colors">{{ $t('footer.buy') }}</a></li>
+            <li><a href="#" class="hover:text-nadine-bronze transition-colors">{{ $t('footer.sell') }}</a></li>
+            <li><a href="#" class="hover:text-nadine-bronze transition-colors">{{ $t('footer.rent') }}</a></li>
+            <li><a href="#" class="hover:text-nadine-bronze transition-colors">{{ $t('footer.evaluation') }}</a></li>
           </ul>
         </div>
 
         <!-- Contacto -->
         <div>
-          <h4 class="text-lg font-semibold mb-4 text-nadine-bronze">Contacto</h4>
+          <h4 class="text-lg font-semibold mb-4 text-nadine-bronze">{{ $t('footer.contact') }}</h4>
           <ul class="space-y-2 text-gray-700 text-sm">
             <li>Email: contato@nadine.com</li>
             <li>Tel: +55 18 99164-1571</li>
@@ -63,7 +63,7 @@
 
       <!-- Copyright -->
       <div class="border-t border-nadine-bronze border-opacity-30 pt-8 text-center text-gray-700 text-sm">
-        <p>&copy; 2025 Nadine Imobiliária. Todos os direitos reservados.</p>
+        <p>&copy; 2025 Nadine Imobiliária. {{ $t('footer.rights') }}</p>
       </div>
     </div>
   </footer>

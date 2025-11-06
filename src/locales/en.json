@@ -1,0 +1,126 @@
+{
+  "nav": {
+    "about": "About Us",
+    "properties": "Properties",
+    "offices": "Offices and Agents",
+    "franchising": "Franchising",
+    "contact": "Contact"
+  },
+  "hero": {
+    "title": "Find your dream home",
+    "subtitle": "Discover the best properties with NADINE",
+    "carouselTitle": "One World. One Search.",
+    "search": "Search",
+    "buy": "Buy",
+    "rent": "Rent"
+  },
+  "search": {
+    "where": "Where? (e.g. Lisbon)",
+    "global": "Global",
+    "propertyType": "Property Type",
+    "minimum": "Minimum:",
+    "maximum": "Maximum:",
+    "rooms": "Rooms:",
+    "bathrooms": "Bathrooms:",
+    "reference": "Search by Ref",
+    "luxury": "Luxury Properties - The NADINE Collection",
+    "openHouse": "Open House Properties",
+    "clear": "Clear",
+    "searchButton": "Search",
+    "more": "More"
+  },
+  "sections": {
+    "featuredListings": "FEATURED LISTINGS",
+    "remaxCollection": "THE NADINE COLLECTION",
+    "uniqueProperties": "UNIQUE PROPERTIES",
+    "discoverLuxury": "DISCOVER LUXURY",
+    "featuredDestinations": "FEATURED DESTINATIONS",
+    "moreDestinations": "MORE DESTINATIONS"
+  },
+  "properties": {
+    "detachedFamilyHome": "Detached Family Home",
+    "canada": "Canada",
+    "usa": "USA",
+    "modernVilla": "Modern Villa",
+    "miamiFL": "Miami, Florida",
+    "modernApartment": "Modern Apartment",
+    "newYorkUSA": "New York, USA",
+    "beachHouse": "Beachfront House",
+    "malibuCA": "Malibu, California",
+    "multilevelHome": "Multi-level Home",
+    "montrealQC": "Montréal (Westmount), Quebec, Canada",
+    "villa": "Villa",
+    "pembrokeSV": "Pembroke, St Vincent, Caribbean and Central America",
+    "luxuryApartment": "Luxury Apartment",
+    "dubaiUAE": "Dubai Marina, Dubai, United Arab Emirates",
+    "vacantLand": "Vacant Land",
+    "stAnneBay": "St. Anne Bay, Praslin, Seychelles",
+    "apartment": "Apartment",
+    "pragueCZ": "Praha 5, Prague, Czech Republic",
+    "familyHome": "Family Home",
+    "vancouverBC": "Vancouver, British Columbia, Canada",
+    "modernVillaSpain": "Modern Villa",
+    "marbellaSpain": "Marbella, Málaga, Spain",
+    "desc1": "Modern apartment with luxury finishes, located in one of Hamilton's most valued areas. Spacious living room with panoramic views, fully equipped gourmet kitchen, master suite with closet and whirlpool tub.",
+    "desc2": "Luxury villa with contemporary architecture, infinity pool overlooking the sea, landscaped garden, garage for 4 cars and complete home automation system.",
+    "desc3": "Gated community with 24h security, complete leisure area with pool, sports court, party room and gourmet space. Apartment with large balcony and privileged view.",
+    "desc4": "Detached house perfect for families, with large backyard, covered garage, wood fireplace and location close to schools and commerce.",
+    "desc5": "Modern duplex with contemporary design, ideal for young couples or investment. Excellent location with easy access to public transport.",
+    "desc6": "Flat land with excellent construction potential, located in a noble and expanding area. Ideal for residential construction or real estate investment."
+  },
+  "property": {
+    "bedrooms": "Bedrooms",
+    "bathrooms": "Bathrooms",
+    "area": "Area",
+    "viewMore": "View More",
+    "viewAllPhotos": "View All Photos",
+    "previous": "Previous",
+    "next": "Next",
+    "backToResults": "Back to Results",
+    "forSale": "For Sale",
+    "new": "NEW",
+    "featured": "FEATURED",
+    "land": "LAND",
+    "askPrice": "Ask us for Price",
+    "contactMe": "Contact Me",
+    "description": "Description",
+    "descriptionFallback": "High-end property in a prime location. Contact us for more information about this exclusive property."
+  },
+  "propertyTypes": {
+    "apartment": "Apartment",
+    "house": "House",
+    "villa": "Villa",
+    "condo": "Condo",
+    "land": "Land",
+    "duplex": "Duplex"
+  },
+  "sort": {
+    "recent": "Most Recent Listings",
+    "priceAsc": "Price (ascending)",
+    "priceDesc": "Price (descending)"
+  },
+  "messages": {
+    "noProperties": "No properties found",
+    "adjustFilters": "Try adjusting your search filters"
+  },
+  "footer": {
+    "description": "High-end real estate agency specialized in exclusive and luxury properties.",
+    "quickLinks": "Quick Links",
+    "aboutUs": "About Us",
+    "agents": "Agents",
+    "blog": "Blog",
+    "services": "Services",
+    "buy": "Buy",
+    "sell": "Sell",
+    "rent": "Rent",
+    "evaluation": "Evaluation",
+    "contact": "Contact",
+    "followUs": "Follow Us",
+    "rights": "All rights reserved."
+  },
+  "explore": {
+    "byPrice": "Explore By Price",
+    "byLifestyle": "Explore by Lifestyle",
+    "byLocation": "Explore by Location"
+  }
+}

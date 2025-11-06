@@ -21,7 +21,7 @@
     <div class="relative z-10 flex flex-col items-center justify-center h-full text-white px-4">
       <!-- Main Title -->
       <h1 class="text-5xl md:text-7xl font-bold text-center mb-8 drop-shadow-2xl">
-        Um Mundo. Uma Pesquisa.
+        {{ $t('hero.carouselTitle') }}
       </h1>
 
       <!-- Buttons -->
@@ -31,14 +31,14 @@
           @click="searchType = 'buy'"
           class="px-8 py-3 rounded-md font-semibold transition-all hover:bg-nadine-cream hover:text-nadine-black"
         >
-          Comprar
+          {{ $t('hero.buy') }}
         </button>
         <button
           :class="searchType === 'rent' ? 'bg-nadine-cream text-nadine-black' : 'bg-transparent border-2 border-white'"
           @click="searchType = 'rent'"
           class="px-8 py-3 rounded-md font-semibold transition-all hover:bg-nadine-cream hover:text-nadine-black"
         >
-          Arrendar
+          {{ $t('hero.rent') }}
         </button>
       </div>
 
@@ -53,7 +53,7 @@
             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
               <path d="M10 20C4.477 20 0 15.523 0 10S4.477 0 10 0s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 100-16 8 8 0 000 16z"/>
             </svg>
-            <span>Global</span>
+            <span>{{ $t('search.global') }}</span>
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
             </svg>
@@ -62,7 +62,7 @@
             v-if="showLocationTypeDropdown"
             class="absolute top-full left-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 text-gray-800 z-20"
           >
-            <a href="#" class="block px-4 py-2 hover:bg-gray-100">Global</a>
+            <a href="#" class="block px-4 py-2 hover:bg-gray-100">{{ $t('search.global') }}</a>
             <a href="#" class="block px-4 py-2 hover:bg-gray-100">Portugal</a>
             <a href="#" class="block px-4 py-2 hover:bg-gray-100">Brasil</a>
           </div>
@@ -71,7 +71,7 @@
         <!-- Search Input -->
         <input
           type="text"
-          placeholder="Onde? (ex. Lisboa)"
+          :placeholder="$t('search.where')"
           class="flex-1 px-6 py-4 text-gray-800 focus:outline-none"
           v-model="searchLocation"
         />
@@ -89,7 +89,7 @@
         @click="showAdvancedFilters = !showAdvancedFilters"
         class="mt-6 text-white flex flex-col items-center hover:text-gray-200 transition-colors"
       >
-        <span class="mb-2">Mais</span>
+        <span class="mb-2">{{ $t('search.more') }}</span>
         <svg
           class="w-6 h-6 transition-transform duration-300"
           :class="{ 'rotate-180': showAdvancedFilters }"
@@ -111,12 +111,12 @@
               v-model="propertyType"
               class="px-4 py-3 border border-gray-300 rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-nadine-bronze"
             >
-              <option value="">Tipo de Imóvel</option>
-              <option value="apartment">Apartamento</option>
-              <option value="house">Casa</option>
-              <option value="villa">Vila</option>
-              <option value="condo">Condomínio</option>
-              <option value="land">Terreno</option>
+              <option value="">{{ $t('search.propertyType') }}</option>
+              <option value="apartment">{{ $t('propertyTypes.apartment') }}</option>
+              <option value="house">{{ $t('propertyTypes.house') }}</option>
+              <option value="villa">{{ $t('propertyTypes.villa') }}</option>
+              <option value="condo">{{ $t('propertyTypes.condo') }}</option>
+              <option value="land">{{ $t('propertyTypes.land') }}</option>
             </select>
 
             <!-- Mínimo (Preço) -->
@@ -124,7 +124,7 @@
               v-model="minPrice"
               class="px-4 py-3 border border-gray-300 rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-nadine-bronze"
             >
-              <option value="">Mínimo:</option>
+              <option value="">{{ $t('search.minimum') }}</option>
               <option value="100000">100.000 €</option>
               <option value="250000">250.000 €</option>
               <option value="500000">500.000 €</option>
@@ -139,7 +139,7 @@
               v-model="maxPrice"
               class="px-4 py-3 border border-gray-300 rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-nadine-bronze"
             >
-              <option value="">Máximo:</option>
+              <option value="">{{ $t('search.maximum') }}</option>
               <option value="250000">250.000 €</option>
               <option value="500000">500.000 €</option>
               <option value="1000000">1.000.000 €</option>
@@ -154,7 +154,7 @@
               v-model="rooms"
               class="px-4 py-3 border border-gray-300 rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-nadine-bronze"
             >
-              <option value="">Rooms:</option>
+              <option value="">{{ $t('search.rooms') }}</option>
               <option value="1">1+</option>
               <option value="2">2+</option>
               <option value="3">3+</option>
@@ -167,7 +167,7 @@
               v-model="bathrooms"
               class="px-4 py-3 border border-gray-300 rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-nadine-bronze"
             >
-              <option value="">Casas de Banho:</option>
+              <option value="">{{ $t('search.bathrooms') }}</option>
               <option value="1">1+</option>
               <option value="2">2+</option>
               <option value="3">3+</option>
@@ -181,7 +181,7 @@
             <input
               v-model="reference"
               type="text"
-              placeholder="Pesquisar por Ref"
+              :placeholder="$t('search.reference')"
               class="flex-1 px-4 py-3 border border-gray-300 rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-nadine-bronze"
             />
 
@@ -193,7 +193,7 @@
                   type="checkbox"
                   class="w-4 h-4 text-nadine-bronze border-gray-300 rounded focus:ring-nadine-bronze"
                 />
-                <span class="text-sm">Imóveis de Luxo - The REMAX Collection</span>
+                <span class="text-sm">{{ $t('search.luxury') }}</span>
               </label>
 
               <label class="flex items-center space-x-2 text-gray-700 cursor-pointer">
@@ -202,7 +202,7 @@
                   type="checkbox"
                   class="w-4 h-4 text-nadine-bronze border-gray-300 rounded focus:ring-nadine-bronze"
                 />
-                <span class="text-sm">Imóveis em Open House</span>
+                <span class="text-sm">{{ $t('search.openHouse') }}</span>
               </label>
             </div>
           </div>
@@ -213,13 +213,13 @@
               @click="clearFilters"
               class="px-8 py-3 border-2 border-gray-300 text-gray-700 rounded-md font-semibold hover:bg-gray-50 transition-colors"
             >
-              Limpar
+              {{ $t('search.clear') }}
             </button>
             <button
               @click="applyFilters"
               class="px-8 py-3 bg-nadine-bronze text-white rounded-md font-semibold hover:bg-nadine-bronze-dark transition-colors shadow-md hover:shadow-lg"
             >
-              Procurar
+              {{ $t('search.searchButton') }}
             </button>
           </div>
         </div>
@@ -227,13 +227,13 @@
     </div>
 
     <!-- Property Info Banner -->
-    <div class="absolute bottom-0 left-0 right-0 bg-nadine-black bg-opacity-90 text-white py-4 px-8 flex items-center justify-between z-10 backdrop-blur-sm">
+      <div class="absolute bottom-0 left-0 right-0 bg-nadine-black bg-opacity-90 text-white py-4 px-8 flex items-center justify-between z-10 backdrop-blur-sm">
       <div class="flex items-center space-x-3">
         <span class="font-semibold text-nadine-bronze">{{ properties[currentIndex].type }}</span>
         <span class="text-nadine-beige">|</span>
         <span>{{ properties[currentIndex].location }}</span>
         <span class="text-nadine-beige">|</span>
-        <span class="font-bold text-nadine-bronze">{{ properties[currentIndex].price }}</span>
+        <span class="font-bold text-nadine-bronze">{{ formatPropertyPrice(properties[currentIndex]) }}</span>
       </div>
       <button class="bg-nadine-bronze text-white rounded-full p-2 hover:bg-nadine-bronze-dark transition-colors">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -329,21 +329,33 @@ const properties = ref([
     image: 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=1600',
     type: 'VILA',
     location: 'Perivolia, Larnaca, Cyprus',
-    price: '3.700.000 € / 4.289.595 USD'
+    priceAmount: 3700000,
+    priceCurrency: 'EUR'
   },
   {
     image: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=1600',
     type: 'LUXURY CONDO',
     location: 'Kathu, Phuket, Thailand',
-    price: '5.500.000 USD'
+    priceAmount: 5500000,
+    priceCurrency: 'USD'
   },
   {
     image: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1600',
     type: 'VILLA',
     location: 'Miami Beach, Florida',
-    price: '8.900.000 USD'
+    priceAmount: 8900000,
+    priceCurrency: 'USD'
   }
 ])
+
+function formatPropertyPrice(property) {
+  if (!property || property.priceAmount == null) return property.price || '—'
+  const formatter = new Intl.NumberFormat('pt-PT', { 
+    style: 'currency', 
+    currency: property.priceCurrency || 'USD'
+  })
+  return formatter.format(property.priceAmount)
+}
 
 let intervalId = null
 

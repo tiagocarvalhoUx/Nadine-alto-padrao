@@ -34,7 +34,7 @@
           <!-- Property Info - Bottom Left -->
           <div class="absolute bottom-8 left-8 text-white z-20">
             <h3 class="text-2xl font-bold mb-2">{{ video.type }}</h3>
-            <p class="text-lg">{{ video.location }} | {{ video.price }}</p>
+            <p class="text-lg">{{ video.location }} | {{ formatPropertyPrice(video) }}</p>
           </div>
         </div>
       </transition-group>
@@ -90,6 +90,9 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
+import { usePropertyStore } from '../stores/propertyStore'
+
+const propertyStore = usePropertyStore()
 
 const currentIndex = ref(0)
 
@@ -102,30 +105,43 @@ const videos = ref([
     posterUrl: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=1600',
     type: 'LUXURY CONDO',
     location: 'Kathu, Phuket, Thailand',
-    price: '5.500.000 USD'
+    priceAmount: 5500000,
+    priceCurrency: 'USD'
   },
   {
     videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
     posterUrl: 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=1600',
     type: 'PENTHOUSE',
     location: 'Dubai Marina, Emirates',
-    price: '8.900.000 USD'
+    priceAmount: 8900000,
+    priceCurrency: 'USD'
   },
   {
     videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
     posterUrl: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1600',
     type: 'BEACHFRONT VILLA',
     location: 'Malibu, California',
-    price: '12.500.000 USD'
+    priceAmount: 12500000,
+    priceCurrency: 'USD'
   },
   {
     videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',
     posterUrl: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1600',
     type: 'MODERN APARTMENT',
     location: 'Manhattan, New York',
-    price: '6.200.000 USD'
+    priceAmount: 6200000,
+    priceCurrency: 'USD'
   }
 ])
+
+function formatPropertyPrice(property) {
+  if (!property || property.priceAmount == null) return property.price || '—'
+  const formatter = new Intl.NumberFormat('pt-PT', { 
+    style: 'currency', 
+    currency: property.priceCurrency || 'USD'
+  })
+  return formatter.format(property.priceAmount)
+}
 
 let intervalId = null
 

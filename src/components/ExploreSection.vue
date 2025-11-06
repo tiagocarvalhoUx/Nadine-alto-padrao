@@ -18,7 +18,7 @@
             <div class="bg-white bg-opacity-20 p-6 rounded-lg mb-4 backdrop-blur-sm">
               <component :is="option.icon" class="w-12 h-12" />
             </div>
-            <h3 class="text-2xl font-bold text-center">{{ option.title }}</h3>
+            <h3 class="text-2xl font-bold text-center">{{ $t(option.titleKey) }}</h3>
           </div>
         </div>
       </div>
@@ -73,17 +73,17 @@ const LocationIcon = () => h('svg', {
 
 const exploreOptions = ref([
   {
-    title: 'Explore Por Preço',
+    titleKey: 'explore.byPrice',
     image: 'https://images.unsplash.com/photo-1600585154084-4e5fe7c39198?w=800',
     icon: PriceIcon
   },
   {
-    title: 'Explore por Estilo de Vida',
+    titleKey: 'explore.byLifestyle',
     image: 'https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=800',
     icon: LifestyleIcon
   },
   {
-    title: 'Explore por Local',
+    titleKey: 'explore.byLocation',
     image: 'https://images.unsplash.com/photo-1600585154363-67eb9e2e2099?w=800',
     icon: LocationIcon
   }

@@ -1,0 +1,126 @@
+{
+  "nav": {
+    "about": "关于我们",
+    "properties": "房产",
+    "offices": "办事处和代理",
+    "franchising": "特许经营",
+    "contact": "联系我们"
+  },
+  "hero": {
+    "title": "找到您梦想中的家",
+    "subtitle": "与NADINE一起发现最好的房产",
+    "carouselTitle": "一个世界。一次搜索。",
+    "search": "搜索",
+    "buy": "购买",
+    "rent": "租赁"
+  },
+  "search": {
+    "where": "哪里？(例如里斯本)",
+    "global": "全球",
+    "propertyType": "房产类型",
+    "minimum": "最低:",
+    "maximum": "最高:",
+    "rooms": "房间:",
+    "bathrooms": "浴室:",
+    "reference": "按参考编号搜索",
+    "luxury": "豪华房产 - The NADINE Collection",
+    "openHouse": "开放参观房产",
+    "clear": "清除",
+    "searchButton": "搜索",
+    "more": "更多"
+  },
+  "sections": {
+    "featuredListings": "精选房源",
+    "remaxCollection": "THE NADINE COLLECTION",
+    "uniqueProperties": "独特房产",
+    "discoverLuxury": "探索奢华",
+    "featuredDestinations": "精选目的地",
+    "moreDestinations": "更多目的地"
+  },
+  "properties": {
+    "detachedFamilyHome": "独立家庭住宅",
+    "canada": "加拿大",
+    "usa": "美国",
+    "modernVilla": "现代别墅",
+    "miamiFL": "迈阿密，佛罗里达",
+    "modernApartment": "现代公寓",
+    "newYorkUSA": "纽约，美国",
+    "beachHouse": "海滨别墅",
+    "malibuCA": "马里布，加利福尼亚",
+    "multilevelHome": "多层住宅",
+    "montrealQC": "蒙特利尔（西山），魁北克，加拿大",
+    "villa": "别墅",
+    "pembrokeSV": "彭布罗克，圣文森特，加勒比和中美洲",
+    "luxuryApartment": "豪华公寓",
+    "dubaiUAE": "迪拜码头，迪拜，阿拉伯联合酋长国",
+    "vacantLand": "空地",
+    "stAnneBay": "圣安妮湾，普拉兰岛，塞舌尔",
+    "apartment": "公寓",
+    "pragueCZ": "布拉格5区，布拉格，捷克共和国",
+    "familyHome": "家庭住宅",
+    "vancouverBC": "温哥华，不列颠哥伦比亚，加拿大",
+    "modernVillaSpain": "现代别墅",
+    "marbellaSpain": "马贝拉，马拉加，西班牙",
+    "desc1": "位于汉密尔顿最受欢迎地区之一的豪华装修现代公寓。宽敞的客厅享有全景景观，配备齐全的美食厨房，主套房配有衣帽间和按摩浴缸。",
+    "desc2": "现代建筑的豪华别墅，无边泳池俯瞰大海，景观花园，4辆车车库和完整的家庭自动化系统。",
+    "desc3": "封闭式社区，24小时保安，完整的休闲区配有游泳池、运动场、宴会厅和美食空间。公寓拥有宽敞的阳台和优越的视野。",
+    "desc4": "适合家庭的独立房屋，拥有宽敞的后院、带顶车库、木柴壁炉，靠近学校和商业区。",
+    "desc5": "现代设计的复式公寓，非常适合年轻夫妇或投资。地理位置优越，方便乘坐公共交通。",
+    "desc6": "平坦的土地，具有出色的建筑潜力，位于高尚且不断扩展的地区。非常适合住宅建设或房地产投资。"
+  },
+  "property": {
+    "bedrooms": "卧室",
+    "bathrooms": "浴室",
+    "area": "面积",
+    "viewMore": "查看更多",
+    "viewAllPhotos": "查看所有照片",
+    "previous": "上一个",
+    "next": "下一个",
+    "backToResults": "返回结果",
+    "forSale": "出售",
+    "new": "新",
+    "featured": "精选",
+    "land": "土地",
+    "askPrice": "询问价格",
+    "contactMe": "联系我",
+    "description": "描述",
+    "descriptionFallback": "位于黄金地段的高端房产。请联系我们了解有关此独家房产的更多信息。"
+  },
+  "propertyTypes": {
+    "apartment": "公寓",
+    "house": "房子",
+    "villa": "别墅",
+    "condo": "公寓",
+    "land": "土地",
+    "duplex": "复式"
+  },
+  "sort": {
+    "recent": "最新房源",
+    "priceAsc": "价格（升序）",
+    "priceDesc": "价格（降序）"
+  },
+  "messages": {
+    "noProperties": "未找到房产",
+    "adjustFilters": "尝试调整您的搜索过滤器"
+  },
+  "footer": {
+    "description": "专门从事独家和豪华房产的高端房地产机构。",
+    "quickLinks": "快速链接",
+    "aboutUs": "关于我们",
+    "agents": "代理",
+    "blog": "博客",
+    "services": "服务",
+    "buy": "购买",
+    "sell": "出售",
+    "rent": "租赁",
+    "evaluation": "评估",
+    "contact": "联系我们",
+    "followUs": "关注我们",
+    "rights": "版权所有。"
+  },
+  "explore": {
+    "byPrice": "按价格探索",
+    "byLifestyle": "按生活方式探索",
+    "byLocation": "按位置探索"
+  }
+}

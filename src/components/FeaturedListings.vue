@@ -3,7 +3,7 @@
     <div class="container mx-auto">
       <!-- Title -->
       <h2 class="text-4xl md:text-5xl font-bold text-remax-blue text-center mb-12">
-        LISTAGENS EM DESTAQUE
+        {{ $t('sections.featuredListings') }}
       </h2>
 
       <!-- Carousel Container -->
@@ -27,9 +27,9 @@
                 />
                 <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80"></div>
                 <div class="absolute bottom-0 left-0 right-0 p-6 text-white">
-                  <h3 class="text-xl font-semibold mb-2">{{ property.title }}</h3>
-                  <p class="text-sm mb-1">{{ property.location }}</p>
-                  <p class="text-lg font-bold mt-3">{{ property.price }}</p>
+                  <h3 class="text-xl font-semibold mb-2">{{ $t(property.titleKey) }}</h3>
+                  <p class="text-sm mb-1">{{ $t(property.locationKey) }}</p>
+                  <p class="text-lg font-bold mt-3">{{ formatPropertyPrice(property) }}</p>
                 </div>
               </div>
             </div>
@@ -62,41 +62,66 @@
 
 <script setup>
 import { ref } from 'vue'
+import { usePropertyStore } from '../stores/propertyStore'
+import { useCurrencyStore } from '../stores/currencyStore'
+
+const store = usePropertyStore()
+const currencyStore = useCurrencyStore()
 
 const currentSlide = ref(0)
 
+// Use priceAmount (number) and priceCurrency (ISO code) for structured conversion.
 const properties = ref([
   {
     image: 'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=800',
-    title: 'Casa de Família Isolada',
-    location: 'Canadá',
-    price: '2.749.000 CDN / 1.956.096,97 USD'
+    titleKey: 'properties.detachedFamilyHome',
+    locationKey: 'properties.canada',
+    priceAmount: 2749000,
+    priceCurrency: 'CAD'
   },
   {
     image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800',
-    title: 'Casa de Família Isolada',
-    location: 'EUA',
-    price: '2.149.000 USD'
+    titleKey: 'properties.detachedFamilyHome',
+    locationKey: 'properties.usa',
+    priceAmount: 2149000,
+    priceCurrency: 'USD'
   },
   {
     image: 'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=800',
-    title: 'Villa de Luxo',
-    location: 'Miami, Florida',
-    price: '5.850.000 USD'
+    titleKey: 'properties.modernVilla',
+    locationKey: 'properties.miamiFL',
+    priceAmount: 5850000,
+    priceCurrency: 'USD'
   },
   {
     image: 'https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=800',
-    title: 'Apartamento Moderno',
-    location: 'Nova York, EUA',
-    price: '3.200.000 USD'
+    titleKey: 'properties.modernApartment',
+    locationKey: 'properties.newYorkUSA',
+    priceAmount: 3200000,
+    priceCurrency: 'USD'
   },
   {
     image: 'https://images.unsplash.com/photo-1600607687644-c7171b42498b?w=800',
-    title: 'Casa à Beira-Mar',
-    location: 'Malibu, Califórnia',
-    price: '12.500.000 USD'
+    titleKey: 'properties.beachHouse',
+    locationKey: 'properties.malibuCA',
+    priceAmount: 12500000,
+    priceCurrency: 'USD'
   }
 ])
+
+function formatPropertyPrice(property) {
+  if (!property || property.priceAmount == null) return property.price || '—'
+
+  // Converter o preço para a moeda selecionada
+  const convertedAmount = currencyStore.convertCurrency(
+    property.priceAmount,
+    property.priceCurrency,
+    currencyStore.selectedCurrency
+  )
+
+  // Formatar com o símbolo da moeda selecionada
+  return currencyStore.formatCurrency(convertedAmount, currencyStore.selectedCurrency)
+}
 
 const nextSlide = () => {
   if (currentSlide.value < properties.value.length - 3) {

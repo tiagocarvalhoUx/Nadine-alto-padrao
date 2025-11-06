@@ -3,7 +3,7 @@
     <div class="container mx-auto">
       <!-- Title -->
       <h2 class="text-4xl md:text-5xl font-bold text-remax-blue text-center mb-12">
-        Destinos em Destaque
+        {{ $t('sections.featuredDestinations') }}
       </h2>
 
       <!-- Destinations Grid -->
@@ -33,7 +33,7 @@
       <!-- More Destinations Button -->
       <div class="text-center">
         <button class="bg-remax-blue text-white px-10 py-4 rounded-md font-semibold hover:bg-remax-blue-dark transition-all inline-flex items-center space-x-2">
-          <span>Mais Destinos</span>
+          <span>{{ $t('sections.moreDestinations') }}</span>
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
           </svg>
