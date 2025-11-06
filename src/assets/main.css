@@ -1,0 +1,25 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply antialiased;
+  }
+}
+
+@layer components {
+  .luxury-card {
+    @apply bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow duration-300;
+  }
+
+  .luxury-button {
+    @apply px-6 py-3 bg-luxury-gold text-white font-semibold rounded-lg hover:bg-opacity-90 transition-all duration-300;
+  }
+
+  .section-title {
+    @apply text-4xl md:text-5xl font-serif font-bold text-luxury-dark mb-4;
+  }
+}
