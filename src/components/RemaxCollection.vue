@@ -24,9 +24,9 @@
           />
           <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-70"></div>
           <div class="absolute bottom-0 left-0 right-0 p-6 text-white">
-            <h3 class="text-xl font-semibold mb-2">{{ $t(property.titleKey) }}</h3>
-            <p class="text-sm mb-2">{{ $t(property.locationKey) }}</p>
-            <p class="text-lg font-bold">{{ formatPropertyPrice(property) }}</p>
+            <h3 class="text-xl font-semibold mb-2">{{ property.title }}</h3>
+            <p class="text-sm mb-2">{{ property.location }}</p>
+            <p class="text-lg font-bold">{{ formatPrice(property.price) }}</p>
           </div>
         </div>
       </div>
@@ -42,49 +42,47 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { usePropertyStore } from '../stores/propertyStore'
+import { ref, computed, onMounted } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useCurrencyStore } from '../stores/currencyStore'
 
-const store = usePropertyStore()
+const { t } = useI18n()
 const currencyStore = useCurrencyStore()
 
-const properties = ref([
+// Buscar taxas de câmbio quando o componente for montado
+onMounted(() => {
+  currencyStore.fetchExchangeRates()
+})
+
+// Função para formatar preços
+const formatPrice = (price) => {
+  if (!price) return ''
+
+  // Converter o preço para a moeda selecionada
+  const convertedPrice = currencyStore.convertCurrency(price, 'EUR', currencyStore.selectedCurrency)
+
+  // Usar a função do currencyStore que já posiciona o símbolo corretamente
+  return currencyStore.formatCurrency(convertedPrice)
+}
+
+const properties = computed(() => [
   {
     image: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800',
-    titleKey: 'properties.multilevelHome',
-    locationKey: 'properties.montrealQC',
-    priceAmount: 18500000,
-    priceCurrency: 'CAD'
+    title: t('properties.multilevelHome'),
+    location: t('properties.montrealQC'),
+    price: 12500000 // Preço em EUR
   },
   {
     image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800',
-    titleKey: 'properties.villa',
-    locationKey: 'properties.pembrokeSV',
-    priceAmount: 3000000,
-    priceCurrency: 'USD'
+    title: t('properties.villa'),
+    location: t('properties.pembrokeSV'),
+    price: 2800000 // Preço em EUR
   },
   {
     image: 'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=800',
-    titleKey: 'properties.luxuryApartment',
-    locationKey: 'properties.dubaiUAE',
-    priceAmount: 4500000,
-    priceCurrency: 'USD'
+    title: t('properties.luxuryApartment'),
+    location: t('properties.dubaiUAE'),
+    price: 4100000 // Preço em EUR
   }
 ])
-
-function formatPropertyPrice(property) {
-  if (!property || property.priceAmount == null) return property.price || '—'
-
-  // Converter o preço para a moeda selecionada
-  const convertedAmount = currencyStore.convertCurrency(
-    property.priceAmount,
-    property.priceCurrency,
-    currencyStore.selectedCurrency
-  )
-
-  // Formatar com o símbolo da moeda selecionada
-  return currencyStore.formatCurrency(convertedAmount, currencyStore.selectedCurrency)
-}
 </script>
- 

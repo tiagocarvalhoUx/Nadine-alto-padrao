@@ -67,7 +67,7 @@
         </button>
 
         <!-- Download -->
-        <button @click="downloadCurrentImage" class="bg-white hover:bg-gray-100 p-3 rounded-full shadow-lg transition-colors" title="Download">
+        <button class="bg-white hover:bg-gray-100 p-3 rounded-full shadow-lg transition-colors" title="Download">
           <svg class="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
           </svg>
@@ -136,7 +136,7 @@
 
         <!-- Preço -->
         <p class="text-4xl font-bold text-nadine-bronze mb-6">
-          {{ formatPrice(property.price) }}
+          {{ formatPrice(property.price, property.baseCurrency || 'USD') }}
         </p>
 
         <!-- Localização -->
@@ -168,7 +168,7 @@
             <svg class="w-6 h-6 text-nadine-bronze" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h4a1 1 0 011 1v7a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM14 5a1 1 0 011-1h4a1 1 0 011 1v7a1 1 0 01-1 1h-4a1 1 0 01-1-1V5zM4 16a1 1 0 011-1h4a1 1 0 011 1v3a1 1 0 01-1 1H5a1 1 0 01-1-1v-3zM14 16a1 1 0 011-1h4a1 1 0 011 1v3a1 1 0 01-1 1h-4a1 1 0 01-1-1v-3z" />
             </svg>
-            <span class="text-lg"><strong>{{ property.area }}</strong> m²</span>
+            <span class="text-lg"><strong>{{ property.area }}</strong> {{ $t('property.area') }}</span>
           </div>
         </div>
 
@@ -184,7 +184,7 @@
       <div class="bg-white rounded-lg shadow-md p-8 mb-8">
         <h2 class="text-2xl font-bold text-gray-900 mb-4">{{ $t('property.description') }}</h2>
         <p class="text-gray-700 leading-relaxed">
-          {{ property.descriptionKey ? $t(property.descriptionKey) : $t('property.descriptionFallback') }}
+          {{ property.description || $t('property.descriptionFallback') }}
         </p>
       </div>
 
@@ -216,30 +216,46 @@
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
+import { useCurrencyStore } from '../stores/currencyStore'
 import Navbar from '../components/Navbar.vue'
 import Footer from '../components/Footer.vue'
-import { usePropertyStore } from '../stores/propertyStore'
-import { useCurrencyStore } from '../stores/currencyStore'
 
+const { t } = useI18n()
 const route = useRoute()
 const router = useRouter()
-const currentImageIndex = ref(0)
 const currencyStore = useCurrencyStore()
+const currentImageIndex = ref(0)
+
+onMounted(async () => {
+  await currencyStore.initialize()
+})
 
 // Dados mock - em produção, viriam de uma API
-const properties = [
+const formatPrice = (amount, fromCurrency = 'USD') => {
+  try {
+    if (!amount) return currencyStore.formatCurrency(0)
+    const convertedAmount = currencyStore.convertCurrency(amount, fromCurrency, currencyStore.selectedCurrency)
+    return currencyStore.formatCurrency(convertedAmount, currencyStore.selectedCurrency)
+  } catch (error) {
+    console.error('Erro ao formatar preço:', error)
+    return `${fromCurrency} ${amount.toLocaleString()}`
+  }
+}
+
+const properties = computed(() => [
   {
     id: 1,
-    title: 'Apartamento Moderno',
+    title: t('properties.modernApartment'),
     price: 850000,
-    currency: 'CAD',
+    baseCurrency: 'USD',
     bedrooms: 3,
     bathrooms: 2,
     area: 120,
-    type: 'Apartamento',
-    location: 'Hamilton, Canadá',
-    badge: 'NOVO',
-    descriptionKey: 'properties.desc1',
+    type: t('propertyTypes.apartment'),
+    location: t('properties.canada'),
+    badge: t('property.new'),
+    description: t('properties.desc1'),
     images: [
       'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=1600',
       'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=1600',
@@ -251,16 +267,16 @@ const properties = [
   },
   {
     id: 2,
-    title: 'Villa Luxuosa',
+    title: t('properties.modernVilla'),
     price: 2500000,
-    currency: 'EUR',
+    baseCurrency: 'EUR',
     bedrooms: 5,
     bathrooms: 4,
     area: 450,
-    type: 'Villa',
+    type: t('propertyTypes.villa'),
     location: 'Lisboa, Portugal',
-    badge: 'DESTAQUE',
-    descriptionKey: 'properties.desc2',
+    badge: t('property.featured'),
+    description: t('properties.desc2'),
     images: [
       'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1600',
       'https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=1600',
@@ -272,15 +288,15 @@ const properties = [
   },
   {
     id: 3,
-    title: 'Condomínio Premium',
+    title: t('properties.luxuryCondo'),
     price: 1200000,
-    currency: 'EUR',
+    baseCurrency: 'EUR',
     bedrooms: 4,
     bathrooms: 3,
     area: 200,
-    type: 'Condomínio',
+    type: t('propertyTypes.condo'),
     location: 'Porto, Portugal',
-    descriptionKey: 'properties.desc3',
+    description: t('properties.desc3'),
     images: [
       'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1600',
       'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=1600',
@@ -290,15 +306,15 @@ const properties = [
   },
   {
     id: 4,
-    title: 'Casa de Família Isolada',
+    title: t('properties.detachedFamilyHome'),
     price: 699900,
-    currency: 'CAD',
+    baseCurrency: 'CAD',
     bedrooms: 3,
     bathrooms: 2,
     area: 180,
-    type: 'Casa de Família Isolada',
-    location: 'Hamilton, Canadá',
-    descriptionKey: 'properties.desc4',
+    type: t('properties.detachedFamilyHome'),
+    location: t('properties.canada'),
+    description: t('properties.desc4'),
     images: [
       'https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=1600',
       'https://images.unsplash.com/photo-1600047509358-9dc75507daeb?w=1600',
@@ -307,15 +323,15 @@ const properties = [
   },
   {
     id: 5,
-    title: 'Duplex',
+    title: t('propertyTypes.duplex'),
     price: 329900,
-    currency: 'CAD',
+    baseCurrency: 'CAD',
     bedrooms: 2,
     bathrooms: 1,
     area: 85,
-    type: 'Duplex',
-    location: 'Victoriaville, Canadá',
-    descriptionKey: 'properties.desc5',
+    type: t('propertyTypes.duplex'),
+    location: t('properties.canada'),
+    description: t('properties.desc5'),
     images: [
       'https://images.unsplash.com/photo-1598228723793-52759bba239c?w=1600',
       'https://images.unsplash.com/photo-1598928506311-c55ded91a20c?w=1600',
@@ -324,22 +340,26 @@ const properties = [
   },
   {
     id: 6,
-    title: 'Terra Desocupada',
+    title: t('properties.vacantLand'),
     price: 99500,
-    currency: 'USD',
+    baseCurrency: 'USD',
     bedrooms: 0,
     bathrooms: 0,
     area: 1000,
-    type: 'Terreno',
-    location: 'Madera, Estados Unidos',
-    badge: 'TERRENO',
-    descriptionKey: 'properties.desc6',
+    type: t('propertyTypes.land'),
+    location: t('properties.usa'),
+    badge: t('property.land'),
+    description: t('properties.desc6'),
     images: [
-      'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=1600',
-      'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=1600'
+      'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=1600&q=80',
+      'https://images.unsplash.com/photo-1426024120108-99cc76989c71?w=1600&q=80',
+      'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1600&q=80',
+      'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=1600&q=80',
+      'https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=1600&q=80',
+      'https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=1600&q=80'
     ]
   }
-]
+])
 
 const property = ref({
   id: 0,
@@ -351,20 +371,20 @@ const property = ref({
   type: '',
   location: '',
   badge: '',
-  descriptionKey: '',
+  description: '',
   images: []
 })
 
 const loadProperty = () => {
   const propertyId = parseInt(route.params.id)
-  const foundProperty = properties.find(p => p.id === propertyId)
+  const foundProperty = properties.value.find(p => p.id === propertyId)
 
   if (foundProperty) {
     property.value = foundProperty
     currentImageIndex.value = 0 // Resetar para primeira imagem
   } else {
     // Fallback para primeira propriedade se não encontrar
-    property.value = properties[0]
+    property.value = properties.value[0]
   }
 }
 
@@ -375,6 +395,12 @@ onMounted(() => {
 // Watch para detectar mudanças na rota e recarregar propriedade
 watch(() => route.params.id, () => {
   loadProperty()
+})
+
+// Watch para atualizar preços quando a moeda mudar
+watch(() => currencyStore.selectedCurrency, () => {
+  // Forçar atualização do preço
+  property.value = { ...property.value }
 })
 
 const nextImage = () => {
@@ -407,7 +433,7 @@ const scrollToTop = () => {
 
 // Computed properties para navegação entre propriedades
 const currentPropertyIndex = computed(() => {
-  return properties.findIndex(p => p.id === property.value.id)
+  return properties.value.findIndex(p => p.id === property.value.id)
 })
 
 const hasPreviousProperty = computed(() => {
@@ -415,13 +441,13 @@ const hasPreviousProperty = computed(() => {
 })
 
 const hasNextProperty = computed(() => {
-  return currentPropertyIndex.value < properties.length - 1
+  return currentPropertyIndex.value < properties.value.length - 1
 })
 
 // Funções de navegação
 const goToPreviousProperty = () => {
   if (hasPreviousProperty.value) {
-    const previousProperty = properties[currentPropertyIndex.value - 1]
+    const previousProperty = properties.value[currentPropertyIndex.value - 1]
     router.push({ name: 'property-detail', params: { id: previousProperty.id } })
     scrollToTop()
   }
@@ -429,57 +455,13 @@ const goToPreviousProperty = () => {
 
 const goToNextProperty = () => {
   if (hasNextProperty.value) {
-    const nextProperty = properties[currentPropertyIndex.value + 1]
+    const nextProperty = properties.value[currentPropertyIndex.value + 1]
     router.push({ name: 'property-detail', params: { id: nextProperty.id } })
     scrollToTop()
   }
 }
 
-const store = usePropertyStore()
-
-const formatPrice = (price) => {
-  if (!price) return '—'
-
-  // Converter o preço para a moeda selecionada
-  const convertedAmount = currencyStore.convertCurrency(
-    price,
-    property.value.currency || 'USD',
-    currencyStore.selectedCurrency
-  )
-
-  // Formatar com o símbolo da moeda selecionada
-  return currencyStore.formatCurrency(convertedAmount, currencyStore.selectedCurrency)
-}
-
-// Função para fazer download da imagem atual
-const downloadCurrentImage = async () => {
-  const currentImage = property.value.images[currentImageIndex.value]
-  if (!currentImage) return
-
-  try {
-    // Buscar a imagem como blob
-    const response = await fetch(currentImage)
-    const blob = await response.blob()
-
-    // Criar URL temporário para o blob
-    const url = window.URL.createObjectURL(blob)
-
-    // Criar elemento <a> temporário para fazer o download
-    const link = document.createElement('a')
-    link.href = url
-    link.download = `${property.value.title}-foto-${currentImageIndex.value + 1}.jpg`
-
-    // Adicionar ao DOM, clicar e remover
-    document.body.appendChild(link)
-    link.click()
-    document.body.removeChild(link)
-
-    // Limpar o URL temporário
-    window.URL.revokeObjectURL(url)
-  } catch (error) {
-    console.error('Erro ao fazer download da imagem:', error)
-  }
-}
+// Função formatPrice removida pois já temos a versão com conversão de moeda no topo do arquivo
 </script>
 
 <style scoped>

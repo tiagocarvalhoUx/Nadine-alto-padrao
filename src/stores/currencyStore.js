@@ -31,6 +31,42 @@ export const useCurrencyStore = defineStore('currency', () => {
     return availableCurrencies.value.find(c => c.code === selectedCurrency.value)
   })
 
+  // Mapa de locales para cada moeda
+  const currencyLocales = {
+    'BRL': 'pt-BR',
+    'USD': 'en-US',
+    'EUR': 'de-DE',
+    'GBP': 'en-GB',
+    'CNY': 'zh-CN',
+    'CAD': 'en-CA',
+    'MXN': 'es-MX',
+    'INR': 'en-IN'
+  }
+
+  // Função para formatar preços
+  function formatPrice(amount) {
+    if (!amount && amount !== 0) return ''
+    
+    // Usar o locale correto para a moeda selecionada
+    const locale = currencyLocales[selectedCurrency.value] || 'en-US'
+    
+    let formatted = new Intl.NumberFormat(locale, {
+      style: 'currency',
+      currency: selectedCurrency.value,
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+      currencyDisplay: 'narrowSymbol'
+    }).format(amount)
+
+    // Para garantir que o símbolo sempre apareça na posição correta
+    if (selectedCurrency.value === 'BRL') {
+      const value = formatted.replace(/[^\d.,\s]/g, '').trim()
+      return `R$${value}`
+    }
+    
+    return formatted
+  }
+
   // Buscar taxas de câmbio da API
   async function fetchExchangeRates() {
     isLoading.value = true
@@ -75,9 +111,25 @@ export const useCurrencyStore = defineStore('currency', () => {
 
   // Converter valor de uma moeda para outra
   function convertCurrency(amount, fromCurrency, toCurrency) {
-    if (!exchangeRates.value || Object.keys(exchangeRates.value).length === 0) {
-      console.warn('Taxas de câmbio não disponíveis')
+    // Validar parâmetros
+    if (!amount || !fromCurrency || !toCurrency) {
+      console.warn('Parâmetros inválidos para conversão', { amount, fromCurrency, toCurrency })
       return amount
+    }
+
+    // Garantir que temos as taxas de câmbio
+    if (!exchangeRates.value || Object.keys(exchangeRates.value).length === 0) {
+      console.warn('Taxas de câmbio não disponíveis, usando valores de fallback')
+      exchangeRates.value = {
+        EUR: 1,
+        USD: 1.09,
+        GBP: 0.86,
+        BRL: 6.10,
+        CAD: 1.48,
+        CNY: 7.85,
+        INR: 90.50,
+        MXN: 18.60
+      }
     }
 
     // Se as moedas são iguais, retornar o valor original
@@ -85,37 +137,75 @@ export const useCurrencyStore = defineStore('currency', () => {
       return amount
     }
 
-    // Converter para EUR primeiro (base)
-    const amountInEUR = amount / exchangeRates.value[fromCurrency]
+    try {
+      // Converter para EUR primeiro (base)
+      let amountInEUR
+      if (fromCurrency === 'EUR') {
+        amountInEUR = amount
+      } else {
+        amountInEUR = amount / exchangeRates.value[fromCurrency]
+      }
 
-    // Converter de EUR para a moeda de destino
-    const convertedAmount = amountInEUR * exchangeRates.value[toCurrency]
+      // Converter de EUR para a moeda de destino
+      let finalAmount
+      if (toCurrency === 'EUR') {
+        finalAmount = amountInEUR
+      } else {
+        finalAmount = amountInEUR * exchangeRates.value[toCurrency]
+      }
 
-    return convertedAmount
+      console.log('Conversão:', {
+        de: fromCurrency,
+        para: toCurrency,
+        valor: amount,
+        resultado: finalAmount,
+        taxas: exchangeRates.value
+      })
+
+      return finalAmount
+    } catch (error) {
+      console.error('Erro na conversão:', error)
+      return amount
+    }
   }
 
   // Formatar valor com símbolo da moeda
   function formatCurrency(amount, currencyCode = selectedCurrency.value) {
-    const symbols = {
-      BRL: 'R$',
-      USD: '$',
-      EUR: '€',
-      GBP: '£',
-      CAD: 'CA$',
-      CNY: '¥',
-      INR: '₹',
-      MXN: 'MX$'
+    if (!amount) return '0'
+    
+    const formatConfig = {
+      BRL: { locale: 'pt-BR', currency: 'BRL', symbolFirst: true },
+      USD: { locale: 'en-US', currency: 'USD', symbolFirst: true },
+      EUR: { locale: 'de-DE', currency: 'EUR', symbolFirst: false },
+      GBP: { locale: 'en-GB', currency: 'GBP', symbolFirst: true },
+      CAD: { locale: 'en-CA', currency: 'CAD', symbolFirst: true },
+      CNY: { locale: 'zh-CN', currency: 'CNY', symbolFirst: true },
+      INR: { locale: 'en-IN', currency: 'INR', symbolFirst: true },
+      MXN: { locale: 'es-MX', currency: 'MXN', symbolFirst: true }
     }
 
-    const symbol = symbols[currencyCode] || currencyCode
+    try {
+      const config = formatConfig[currencyCode] || { locale: 'en-US', currency: currencyCode, symbolFirst: true }
+      
+      const formatted = new Intl.NumberFormat(config.locale, {
+        style: 'currency',
+        currency: config.currency,
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
+        currencyDisplay: 'narrowSymbol'
+      }).format(amount)
 
-    // Formatar número com separadores
-    const formattedAmount = new Intl.NumberFormat('en-US', {
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0
-    }).format(amount)
-
-    return `${symbol}${formattedAmount}`
+      // Para garantir que o símbolo sempre apareça na posição correta
+      if (currencyCode === 'BRL') {
+        const value = formatted.replace(/[^\d.,\s]/g, '').trim()
+        return `R$${value}`
+      }
+      
+      return formatted
+    } catch (error) {
+      console.error('Erro na formatação:', error)
+      return `${currencyCode} ${amount.toLocaleString()}`
+    }
   }
 
   // Mudar moeda selecionada
@@ -126,6 +216,12 @@ export const useCurrencyStore = defineStore('currency', () => {
 
   // Inicializar o store
   async function initialize() {
+    console.log('Initializing currency store...')
+    const savedCurrency = localStorage.getItem('currency')
+    if (savedCurrency) {
+      console.log('Found saved currency:', savedCurrency)
+      selectedCurrency.value = savedCurrency
+    }
     await fetchExchangeRates()
   }
 

@@ -27,9 +27,10 @@
                 />
                 <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80"></div>
                 <div class="absolute bottom-0 left-0 right-0 p-6 text-white">
-                  <h3 class="text-xl font-semibold mb-2">{{ $t(property.titleKey) }}</h3>
-                  <p class="text-sm mb-1">{{ $t(property.locationKey) }}</p>
-                  <p class="text-lg font-bold">{{ formatPropertyPrice(property) }}</p>
+                  <h3 class="text-xl font-semibold mb-2">{{ property.title }}</h3>
+                  <p class="text-sm mb-1">{{ property.location }}</p>
+                  <p class="text-sm mb-2">{{ property.description }}</p>
+                  <p class="text-lg font-bold">{{ property.displayPrice }}</p>
                 </div>
                 <div class="absolute top-4 right-4">
                   <div class="bg-remax-red text-white px-4 py-2 rounded-md font-semibold">
@@ -64,63 +65,107 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { usePropertyStore } from '../stores/propertyStore'
-import { useCurrencyStore } from '../stores/currencyStore'
+import { useCurrencyStore } from '@/stores/currencyStore'
 
 const { t } = useI18n()
-const store = usePropertyStore()
+const currentSlide = ref(0)
 const currencyStore = useCurrencyStore()
 
-const currentSlide = ref(0)
-
-const properties = ref([
+// Propriedades base com preço e moeda original
+const baseProperties = [
   {
-    image: 'https://images.unsplash.com/photo-1600607687644-c7171b42498b?w=800',
-    titleKey: 'properties.vacantLand',
-    locationKey: 'properties.stAnneBay',
-    priceAmount: null,
-    priceCurrency: null
+    image: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&q=80',
+    title: t('properties.vacantLand'),
+    location: t('properties.stAnneBay'),
+    description: t('property.askPrice'),
+    price: null,
+    currency: null
   },
   {
     image: 'https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=800',
-    titleKey: 'properties.apartment',
-    locationKey: 'properties.pragueCZ',
-    priceAmount: 45000000,
-    priceCurrency: 'EUR'
+    title: t('properties.apartment'),
+    location: t('properties.pragueCZ'),
+    price: 1950000,
+    currency: 'EUR'
   },
   {
     image: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800',
-    titleKey: 'properties.familyHome',
-    locationKey: 'properties.vancouverBC',
-    priceAmount: 8500000,
-    priceCurrency: 'CAD'
+    title: t('properties.familyHome'),
+    location: t('properties.vancouverBC'),
+    price: 8500000,
+    currency: 'CAD'
   },
   {
     image: 'https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=800',
-    titleKey: 'properties.modernVillaSpain',
-    locationKey: 'properties.marbellaSpain',
-    priceAmount: 6200000,
-    priceCurrency: 'EUR'
+    title: t('properties.modernVillaSpain'),
+    location: t('properties.marbellaSpain'),
+    price: 6200000,
+    currency: 'EUR'
+  },
+  {
+    image: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800&q=80',
+    title: t('properties.luxuryPenthouse'),
+    location: t('properties.manhattanNY'),
+    price: 12500000,
+    currency: 'USD'
+  },
+  {
+    image: 'https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=800&q=80',
+    title: t('properties.urbanHouse'),
+    location: t('properties.kensingtonLondon'),
+    price: 4850000,
+    currency: 'GBP'
+  },
+  {
+    image: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800&q=80',
+    title: t('properties.beachfrontHouse'),
+    location: t('properties.goldCoastAU'),
+    price: 3500000,
+    currency: 'USD'
+  },
+  {
+    image: 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=800&q=80',
+    title: t('properties.contemporaryVilla'),
+    location: t('properties.monacoFR'),
+    price: 18900000,
+    currency: 'EUR'
+  },
+  {
+    image: 'https://images.unsplash.com/photo-1613977257363-707ba9348227?w=800&q=80',
+    title: t('properties.panoramicApartment'),
+    location: t('properties.singaporeAsia'),
+    price: 6500000,
+    currency: 'USD'
   }
-])
+]
 
-function formatPropertyPrice(property) {
-  if (!property || property.priceAmount == null) {
-    return t('property.askPrice')
-  }
+const properties = computed(() => {
+  return baseProperties.map(property => {
+    if (!property.price || !property.currency) {
+      return {
+        ...property,
+        displayPrice: property.description || ''
+      }
+    }
 
-  // Converter o preço para a moeda selecionada
-  const convertedAmount = currencyStore.convertCurrency(
-    property.priceAmount,
-    property.priceCurrency,
-    currencyStore.selectedCurrency
-  )
+    // Converter o preço para a moeda selecionada
+    const convertedPrice = currencyStore.convertCurrency(
+      property.price,
+      property.currency,
+      currencyStore.selectedCurrency
+    )
 
-  // Formatar com o símbolo da moeda selecionada
-  return currencyStore.formatCurrency(convertedAmount, currencyStore.selectedCurrency)
-}
+    // Formatar o preço convertido
+    const formattedPrice = currencyStore.formatCurrency(convertedPrice)
+
+    return {
+      ...property,
+      displayPrice: formattedPrice
+    }
+  })
+})
 
 const nextSlide = () => {
   if (currentSlide.value < properties.value.length - 3) {

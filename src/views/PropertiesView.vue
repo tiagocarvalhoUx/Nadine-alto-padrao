@@ -81,14 +81,14 @@
                 v-model="minPrice"
                 class="px-4 py-3 border border-gray-300 rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-nadine-bronze"
               >
-                <option value="">Mínimo:</option>
-                <option value="100000">100.000 €</option>
-                <option value="250000">250.000 €</option>
-                <option value="500000">500.000 €</option>
-                <option value="750000">750.000 €</option>
-                <option value="1000000">1.000.000 €</option>
-                <option value="2000000">2.000.000 €</option>
-                <option value="5000000">5.000.000 €</option>
+                <option value="">{{ $t('search.minimum') }}</option>
+                <option value="100000">100.000</option>
+                <option value="250000">250.000</option>
+                <option value="500000">500.000</option>
+                <option value="750000">750.000</option>
+                <option value="1000000">1.000.000</option>
+                <option value="2000000">2.000.000</option>
+                <option value="5000000">5.000.000</option>
               </select>
 
               <!-- Máximo (Preço) -->
@@ -96,14 +96,14 @@
                 v-model="maxPrice"
                 class="px-4 py-3 border border-gray-300 rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-nadine-bronze"
               >
-                <option value="">Máximo:</option>
-                <option value="250000">250.000 €</option>
-                <option value="500000">500.000 €</option>
-                <option value="1000000">1.000.000 €</option>
-                <option value="2000000">2.000.000 €</option>
-                <option value="5000000">5.000.000 €</option>
-                <option value="10000000">10.000.000 €</option>
-                <option value="20000000">20.000.000+ €</option>
+                <option value="">{{ $t('search.maximum') }}</option>
+                <option value="250000">250.000</option>
+                <option value="500000">500.000</option>
+                <option value="1000000">1.000.000</option>
+                <option value="2000000">2.000.000</option>
+                <option value="5000000">5.000.000</option>
+                <option value="10000000">10.000.000</option>
+                <option value="20000000">20.000.000+</option>
               </select>
 
               <!-- Rooms (Quartos) -->
@@ -111,7 +111,7 @@
                 v-model="rooms"
                 class="px-4 py-3 border border-gray-300 rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-nadine-bronze"
               >
-                <option value="">Rooms:</option>
+                <option value="">{{ $t('search.rooms') }}</option>
                 <option value="1">1+</option>
                 <option value="2">2+</option>
                 <option value="3">3+</option>
@@ -124,7 +124,7 @@
                 v-model="bathrooms"
                 class="px-4 py-3 border border-gray-300 rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-nadine-bronze"
               >
-                <option value="">Casas de Banho:</option>
+                <option value="">{{ $t('search.bathrooms') }}</option>
                 <option value="1">1+</option>
                 <option value="2">2+</option>
                 <option value="3">3+</option>
@@ -272,7 +272,7 @@
 
             <!-- Preço -->
             <p class="text-2xl font-bold text-nadine-bronze mb-3">
-              {{ formatPropertyPrice(property) }}
+              {{ formatPrice(property.price) }}
             </p>
 
             <!-- Detalhes -->
@@ -316,86 +316,102 @@ import Footer from '../components/Footer.vue'
 import { usePropertyStore } from '../stores/propertyStore'
 import { useCurrencyStore } from '../stores/currencyStore'
 
+const { t } = useI18n()
 const router = useRouter()
 const propertyStore = usePropertyStore()
 const currencyStore = useCurrencyStore()
-const { t } = useI18n()
 
 const searchQuery = ref('')
 const showSortDropdown = ref(false)
 const sortOption = ref('recent')
 const showAdvancedFilters = ref(false)
 
+// Função para formatar preços
+const formatPrice = (price) => {
+  if (!price) return ''
+
+  // Converter o preço de EUR para a moeda selecionada
+  const convertedPrice = currencyStore.convertCurrency(price, 'EUR', currencyStore.selectedCurrency)
+
+  // Usar a função de formatação do currencyStore
+  return currencyStore.formatCurrency(convertedPrice)
+}
+
+// Função para ordenar propriedades por preço convertido
+const sortByPrice = (properties, ascending = true) => {
+  return [...properties].sort((a, b) => {
+    const priceA = currencyStore.convertCurrency(a.price, 'EUR', currencyStore.selectedCurrency)
+    const priceB = currencyStore.convertCurrency(b.price, 'EUR', currencyStore.selectedCurrency)
+    return ascending ? priceA - priceB : priceB - priceA
+  })
+}
+
 // Propriedades de exemplo (você pode substituir por dados reais de uma API)
-const properties = ref([
+const favoriteStates = ref({})
+
+const properties = computed(() => [
   {
     id: 1,
-    title: 'Apartamento Moderno',
+    title: t('properties.modernApartment'),
     price: 850000,
-    currency: 'CAD',
     bedrooms: 3,
     bathrooms: 2,
-    location: 'Hamilton, Canadá',
+    location: t('properties.canada'),
     image: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800',
-    badge: 'NOVO',
-    isFavorite: false
+    badge: t('property.new'),
+    isFavorite: favoriteStates.value[1] || false
   },
   {
     id: 2,
-    title: 'Villa Luxuosa',
+    title: t('properties.modernVilla'),
     price: 2500000,
-    currency: 'EUR',
     bedrooms: 5,
     bathrooms: 4,
     location: 'Lisboa, Portugal',
     image: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800',
-    badge: 'DESTAQUE',
-    isFavorite: false
+    badge: t('property.featured'),
+    isFavorite: favoriteStates.value[2] || false
   },
   {
     id: 3,
-    title: 'Condomínio Premium',
+    title: t('properties.luxuryCondo'),
     price: 1200000,
-    currency: 'EUR',
     bedrooms: 4,
     bathrooms: 3,
     location: 'Porto, Portugal',
     image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800',
-    isFavorite: false
+    isFavorite: favoriteStates.value[3] || false
   },
   {
     id: 4,
-    title: 'Casa de Família Isolada',
+    title: t('properties.detachedFamilyHome'),
     price: 699900,
-    currency: 'CAD',
     bedrooms: 3,
     bathrooms: 2,
-    location: 'Hamilton, Canadá',
+    location: t('properties.canada'),
     image: 'https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=800',
-    isFavorite: false
+    isFavorite: favoriteStates.value[4] || false
   },
   {
     id: 5,
-    title: 'Duplex',
+    title: t('propertyTypes.duplex'),
     price: 329900,
-    currency: 'CAD',
     bedrooms: 2,
     bathrooms: 1,
-    location: 'Victoriaville, Canadá',
+    location: t('properties.canada'),
     image: 'https://images.unsplash.com/photo-1598228723793-52759bba239c?w=800',
-    isFavorite: false
+    isFavorite: favoriteStates.value[5] || false
   },
   {
     id: 6,
-    title: 'Terra Desocupada',
+    title: t('properties.vacantLand'),
     price: 99500,
-    currency: 'USD',
     bedrooms: 0,
     bathrooms: 0,
-    location: 'Madera, Estados Unidos',
+    location: t('properties.usa'),
     image: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800',
-    badge: 'TERRENO',
-    isFavorite: false
+    badge: t('property.land'),
+    isFavorite: favoriteStates.value[6] || false
   }
 ])
 
@@ -412,23 +428,126 @@ const currentSort = computed(() => {
   }
 })
 
-const sortedProperties = computed(() => {
-  const filtered = properties.value.filter(property => {
-    if (!searchQuery.value) return true
-    return property.location.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-           property.title.toLowerCase().includes(searchQuery.value.toLowerCase())
+// Função para mapear tipos de propriedade e suas variações
+const getPropertyTypeVariations = (type) => {
+  const variations = {
+    'apartment': ['apartamento', 'apartment', 'apto', 'flat', 'condo'],
+    'house': ['casa', 'house', 'moradia', 'vivenda'],
+    'villa': ['vila', 'villa', 'vivenda', 'moradia'],
+    'condo': ['condomínio', 'condo', 'apartamento', 'apartment'],
+    'land': ['terreno', 'land', 'lote', 'terra']
+  }
+  return variations[type] || [type]
+}
+
+// Função para verificar se a propriedade corresponde ao tipo
+const matchesPropertyType = (propertyTitle, selectedType) => {
+  const title = propertyTitle.toLowerCase()
+  const variations = getPropertyTypeVariations(selectedType.toLowerCase())
+
+  // Verificar se qualquer variação está presente no título
+  return variations.some(variation => {
+    // Verificar se o título contém a variação como palavra completa ou parte de uma palavra
+    const words = title.split(/\s+/)
+    return words.some(word => word.startsWith(variation) || word.includes(variation))
   })
+}
 
-  const sorted = [...filtered]
+const sortedProperties = computed(() => {
+  let filtered = properties.value
 
+  // Aplicar filtro de busca por texto
+  if (searchQuery.value) {
+    filtered = filtered.filter(property => {
+      const searchLower = searchQuery.value.toLowerCase()
+      const location = property.location.toLowerCase()
+      const title = property.title.toLowerCase()
+
+      // Busca flexível: verifica se alguma palavra começa com o termo buscado
+      const locationWords = location.split(/\s+/)
+      const titleWords = title.split(/\s+/)
+
+      return locationWords.some(word => word.startsWith(searchLower)) ||
+             titleWords.some(word => word.startsWith(searchLower)) ||
+             location.includes(searchLower) ||
+             title.includes(searchLower)
+    })
+  }
+
+  // Aplicar filtros da store
+  const filters = propertyStore.searchFilters
+
+  // Filtro por localização da store (vem da barra de busca principal do hero)
+  if (filters.location) {
+    filtered = filtered.filter(property => {
+      const searchLower = filters.location.toLowerCase()
+      const location = property.location.toLowerCase()
+      const title = property.title.toLowerCase()
+
+      // Busca flexível: verifica se alguma palavra começa com o termo buscado
+      const locationWords = location.split(/\s+/)
+      const titleWords = title.split(/\s+/)
+
+      return locationWords.some(word => word.startsWith(searchLower)) ||
+             titleWords.some(word => word.startsWith(searchLower)) ||
+             location.includes(searchLower) ||
+             title.includes(searchLower)
+    })
+  }
+
+  // Filtro por tipo de propriedade (busca flexível e inteligente)
+  if (filters.propertyType) {
+    filtered = filtered.filter(property => {
+      return matchesPropertyType(property.title, filters.propertyType)
+    })
+  }
+
+  // Filtro por preço mínimo
+  if (filters.minPrice) {
+    filtered = filtered.filter(property => {
+      const priceInEUR = property.price
+      return priceInEUR >= parseInt(filters.minPrice)
+    })
+  }
+
+  // Filtro por preço máximo
+  if (filters.maxPrice) {
+    filtered = filtered.filter(property => {
+      const priceInEUR = property.price
+      return priceInEUR <= parseInt(filters.maxPrice)
+    })
+  }
+
+  // Filtro por número de quartos
+  if (filters.rooms) {
+    filtered = filtered.filter(property => {
+      return property.bedrooms && property.bedrooms >= parseInt(filters.rooms)
+    })
+  }
+
+  // Filtro por número de banheiros
+  if (filters.bathrooms) {
+    filtered = filtered.filter(property => {
+      return property.bathrooms && property.bathrooms >= parseInt(filters.bathrooms)
+    })
+  }
+
+  // Filtro por referência
+  if (filters.reference) {
+    filtered = filtered.filter(property => {
+      return property.id.toString().includes(filters.reference)
+    })
+  }
+
+  // Ordenar resultados
   switch (sortOption.value) {
     case 'price-asc':
-      return sorted.sort((a, b) => a.price - b.price)
+      return sortByPrice(filtered, true)
     case 'price-desc':
-      return sorted.sort((a, b) => b.price - a.price)
+      return sortByPrice(filtered, false)
     case 'recent':
     default:
-      return sorted
+      return filtered
   }
 })
 
@@ -485,53 +604,17 @@ const clearFilters = () => {
 }
 
 // Aplicar filtros
-const applyFilters = async () => {
+const applyFilters = () => {
   console.log('Filtros aplicados:', propertyStore.searchFilters)
-
-  // Realizar busca com filtros
-  const results = await propertyStore.searchProperties()
-
-  console.log('Resultados encontrados:', results)
 
   // Fechar os filtros avançados
   showAdvancedFilters.value = false
 
-  // Por enquanto, mostrar um alerta com os resultados
-  alert(
-    `Busca realizada!\n\n` +
-    `Filtros aplicados:\n${JSON.stringify(propertyStore.searchFilters, null, 2)}\n\n` +
-    `${results.length} propriedade(s) encontrada(s)`
-  )
-}
-
-const formatPrice = (price) => {
-  if (price >= 1000000) {
-    return `${(price / 1000000).toFixed(1)}M €`
-  } else if (price >= 1000) {
-    return `${(price / 1000).toFixed(0)}.${((price % 1000) / 100).toFixed(0)}00 €`
-  }
-  return `${price.toLocaleString('pt-PT')} €`
-}
-
-const formatPropertyPrice = (property) => {
-  if (!property || property.price == null) return '—'
-
-  // Converter o preço para a moeda selecionada
-  const convertedAmount = currencyStore.convertCurrency(
-    property.price,
-    property.currency || 'USD',
-    currencyStore.selectedCurrency
-  )
-
-  // Formatar com o símbolo da moeda selecionada
-  return currencyStore.formatCurrency(convertedAmount, currencyStore.selectedCurrency)
+  // Os filtros serão aplicados automaticamente através do computed sortedProperties
 }
 
 const toggleFavorite = (id) => {
-  const property = properties.value.find(p => p.id === id)
-  if (property) {
-    property.isFavorite = !property.isFavorite
-  }
+  favoriteStates.value[id] = !favoriteStates.value[id]
 }
 
 const performSearch = () => {
@@ -542,6 +625,9 @@ const performSearch = () => {
 const goToPropertyDetail = (propertyId) => {
   router.push({ name: 'property-detail', params: { id: propertyId } })
 }
+
+// Inicializar as taxas de câmbio quando o componente for montado
+currencyStore.fetchExchangeRates()
 </script>
 
 <style scoped>

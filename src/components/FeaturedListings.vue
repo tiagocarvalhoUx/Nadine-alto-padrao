@@ -25,11 +25,11 @@
                   :alt="property.title"
                   class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                 />
-                <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80"></div>
+                <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60"></div>
                 <div class="absolute bottom-0 left-0 right-0 p-6 text-white">
-                  <h3 class="text-xl font-semibold mb-2">{{ $t(property.titleKey) }}</h3>
-                  <p class="text-sm mb-1">{{ $t(property.locationKey) }}</p>
-                  <p class="text-lg font-bold mt-3">{{ formatPropertyPrice(property) }}</p>
+                  <h3 class="text-xl font-semibold mb-2">{{ property.title }}</h3>
+                  <p class="text-sm mb-1">{{ property.location }}</p>
+                  <p class="text-lg font-bold mt-3">{{ property.price }}</p>
                 </div>
               </div>
             </div>
@@ -61,67 +61,96 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { usePropertyStore } from '../stores/propertyStore'
+import { ref, computed, onMounted } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useCurrencyStore } from '../stores/currencyStore'
 
-const store = usePropertyStore()
+const { t } = useI18n()
 const currencyStore = useCurrencyStore()
-
 const currentSlide = ref(0)
 
-// Use priceAmount (number) and priceCurrency (ISO code) for structured conversion.
-const properties = ref([
-  {
-    image: 'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=800',
-    titleKey: 'properties.detachedFamilyHome',
-    locationKey: 'properties.canada',
-    priceAmount: 2749000,
-    priceCurrency: 'CAD'
-  },
-  {
-    image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800',
-    titleKey: 'properties.detachedFamilyHome',
-    locationKey: 'properties.usa',
-    priceAmount: 2149000,
-    priceCurrency: 'USD'
-  },
-  {
-    image: 'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=800',
-    titleKey: 'properties.modernVilla',
-    locationKey: 'properties.miamiFL',
-    priceAmount: 5850000,
-    priceCurrency: 'USD'
-  },
-  {
-    image: 'https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=800',
-    titleKey: 'properties.modernApartment',
-    locationKey: 'properties.newYorkUSA',
-    priceAmount: 3200000,
-    priceCurrency: 'USD'
-  },
-  {
-    image: 'https://images.unsplash.com/photo-1600607687644-c7171b42498b?w=800',
-    titleKey: 'properties.beachHouse',
-    locationKey: 'properties.malibuCA',
-    priceAmount: 12500000,
-    priceCurrency: 'USD'
+onMounted(async () => {
+  await currencyStore.initialize()
+})
+
+const formatPropertyPrice = (amount, fromCurrency) => {
+  try {
+    // Garantir que o amount é um número
+    const numericAmount = Number(amount)
+    if (isNaN(numericAmount)) {
+      console.error('Valor inválido para conversão:', amount)
+      return `${fromCurrency} 0`
+    }
+
+    // Se não tivermos taxas de câmbio ainda, mostrar o valor original
+    if (!currencyStore.exchangeRates || Object.keys(currencyStore.exchangeRates).length === 0) {
+      return currencyStore.formatCurrency(numericAmount, fromCurrency)
+    }
+
+    // Converter para a moeda selecionada
+    const convertedAmount = currencyStore.convertCurrency(numericAmount, fromCurrency, currencyStore.selectedCurrency)
+    
+    // Formatar o valor convertido
+    return currencyStore.formatCurrency(convertedAmount, currencyStore.selectedCurrency)
+  } catch (error) {
+    console.error('Erro ao formatar preço:', error)
+    return `${fromCurrency} ${amount.toLocaleString()}`
   }
-])
-
-function formatPropertyPrice(property) {
-  if (!property || property.priceAmount == null) return property.price || '—'
-
-  // Converter o preço para a moeda selecionada
-  const convertedAmount = currencyStore.convertCurrency(
-    property.priceAmount,
-    property.priceCurrency,
-    currencyStore.selectedCurrency
-  )
-
-  // Formatar com o símbolo da moeda selecionada
-  return currencyStore.formatCurrency(convertedAmount, currencyStore.selectedCurrency)
 }
+
+const properties = computed(() => {
+  // Criar as propriedades com preços reativos
+  const baseProperties = [
+    {
+      image: 'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=800',
+      title: t('properties.detachedFamilyHome'),
+      location: t('properties.canada'),
+      basePrice: 2749000,
+      baseCurrency: 'CAD'
+    },
+    {
+      image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800',
+      title: t('properties.detachedFamilyHome'),
+      location: t('properties.usa'),
+      basePrice: 2149000,
+      baseCurrency: 'USD'
+    },
+    {
+      image: 'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=800',
+      title: t('properties.modernVilla'),
+      location: t('properties.miamiFL'),
+      basePrice: 5850000,
+      baseCurrency: 'USD'
+    },
+    {
+      image: 'https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=800',
+      title: t('properties.modernApartment'),
+      location: t('properties.newYorkUSA'),
+      basePrice: 3200000,
+      baseCurrency: 'USD'
+    },
+    {
+      image: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=1200',
+      title: t('properties.beachHouse'),
+      location: t('properties.malibuCA'),
+      basePrice: 12500000,
+      baseCurrency: 'USD'
+    },
+    {
+      image: 'https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=1200',
+      title: t('properties.modernVilla'),
+      location: t('properties.cascaisLisbon'),
+      basePrice: 4200000,
+      baseCurrency: 'EUR'
+    }
+  ]
+
+  // Retornar as propriedades com os preços formatados
+  return baseProperties.map(prop => ({
+    ...prop,
+    price: formatPropertyPrice(prop.basePrice, prop.baseCurrency)
+  }))
+})
 
 const nextSlide = () => {
   if (currentSlide.value < properties.value.length - 3) {

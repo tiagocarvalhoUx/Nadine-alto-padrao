@@ -7,21 +7,19 @@ import de from './locales/de.json'
 import it from './locales/it.json'
 import zh from './locales/zh.json'
 
-const messages = {
-  pt,
-  en,
-  es,
-  fr,
-  de,
-  it,
-  zh
-}
-
 const i18n = createI18n({
   legacy: false,
-  locale: 'pt', // idioma padrão
+  locale: 'pt',
   fallbackLocale: 'en',
-  messages
+  messages: {
+    pt,
+    en,
+    es,
+    fr,
+    de,
+    it,
+    zh
+  }
 })
 
 export default i18n

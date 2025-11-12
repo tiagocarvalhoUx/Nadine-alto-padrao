@@ -15,40 +15,51 @@
         <a href="#" class="nav-link font-medium">{{ $t('nav.contact') }}</a>
       </div>
 
-      <!-- Language & Currency Selectors (Desktop) -->
-      <div class="hidden lg:flex items-center space-x-4 ml-8">
+  <!-- Dropdowns de Idioma e Moeda (Desktop) -->
+  <div class="hidden lg:flex items-center space-x-4 lg:ml-6">
         <!-- Language Selector -->
         <div class="relative">
           <button
             @click="toggleLanguageDropdown"
-            class="nav-link flex items-center space-x-1"
+            class="nav-link flex items-center space-x-2"
           >
-            <span>{{ languageStore.currentLanguage?.name.split(' - ')[0] || 'Português' }}</span>
+            <span class="text-xl">{{ currentLanguageFlag }}</span>
+            <span>{{ currentLanguageName }}</span>
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
             </svg>
           </button>
           <div
             v-if="showLanguageDropdown"
-            class="absolute right-0 mt-2 w-64 bg-white text-gray-800 rounded-lg shadow-lg py-2 z-50 max-h-96 overflow-y-auto"
+            class="absolute right-0 mt-2 w-48 bg-white text-gray-800 rounded-lg shadow-lg py-2"
           >
-            <button
-              v-for="language in languageStore.availableLanguages"
-              :key="language.code"
-              @click="selectLanguage(language.code)"
-              class="w-full text-left px-4 py-2 hover:bg-nadine-beige-light flex items-center space-x-3"
-              :class="{ 'bg-nadine-beige-light': languageStore.selectedLanguage === language.code }"
-            >
-              <span class="text-2xl">{{ language.flag }}</span>
-              <span>{{ language.name }}</span>
+            <button @click="changeLanguage('pt')" class="w-full text-left px-4 py-2 hover:bg-nadine-beige-light flex items-center space-x-2">
+              <span class="text-xl">🇵🇹</span>
+              <span>Português</span>
             </button>
-            <div class="border-t border-gray-200 my-2"></div>
-            <button
-              @click="showMoreLanguages"
-              class="w-full text-left px-4 py-2 text-white font-semibold"
-              style="background-color: #C71E1E;"
-            >
-              View More
+            <button @click="changeLanguage('en')" class="w-full text-left px-4 py-2 hover:bg-nadine-beige-light flex items-center space-x-2">
+              <span class="text-xl">🇬🇧</span>
+              <span>English</span>
+            </button>
+            <button @click="changeLanguage('es')" class="w-full text-left px-4 py-2 hover:bg-nadine-beige-light flex items-center space-x-2">
+              <span class="text-xl">🇪🇸</span>
+              <span>Español</span>
+            </button>
+            <button @click="changeLanguage('fr')" class="w-full text-left px-4 py-2 hover:bg-nadine-beige-light flex items-center space-x-2">
+              <span class="text-xl">🇫🇷</span>
+              <span>Français</span>
+            </button>
+            <button @click="changeLanguage('de')" class="w-full text-left px-4 py-2 hover:bg-nadine-beige-light flex items-center space-x-2">
+              <span class="text-xl">🇩🇪</span>
+              <span>Deutsch</span>
+            </button>
+            <button @click="changeLanguage('it')" class="w-full text-left px-4 py-2 hover:bg-nadine-beige-light flex items-center space-x-2">
+              <span class="text-xl">🇮🇹</span>
+              <span>Italiano</span>
+            </button>
+            <button @click="changeLanguage('zh')" class="w-full text-left px-4 py-2 hover:bg-nadine-beige-light flex items-center space-x-2">
+              <span class="text-xl">🇨🇳</span>
+              <span>中文</span>
             </button>
           </div>
         </div>
@@ -59,32 +70,23 @@
             @click="toggleCurrencyDropdown"
             class="nav-link flex items-center space-x-1"
           >
-            <span>{{ currencyStore.selectedCurrency }}</span>
+            <span>{{ currencyStore.currentCurrency.code }}</span>
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
             </svg>
           </button>
           <div
             v-if="showCurrencyDropdown"
-            class="absolute right-0 mt-2 w-64 bg-white text-gray-800 rounded-lg shadow-lg py-2 z-50"
+            class="absolute right-0 mt-2 w-56 bg-white text-gray-800 rounded-lg shadow-lg py-2 max-h-96 overflow-y-auto"
           >
             <button
               v-for="currency in currencyStore.availableCurrencies"
               :key="currency.code"
-              @click="selectCurrency(currency.code)"
-              class="w-full text-left px-4 py-2 hover:bg-nadine-beige-light flex items-center space-x-3"
-              :class="{ 'bg-nadine-beige-light': currencyStore.selectedCurrency === currency.code }"
+              @click="changeCurrency(currency.code)"
+              class="w-full px-4 py-2 hover:bg-nadine-beige-light flex items-center space-x-2"
             >
-              <span class="text-2xl">{{ currency.flag }}</span>
+              <span>{{ currency.flag }}</span>
               <span>{{ currency.name }}</span>
-            </button>
-            <div class="border-t border-gray-200 my-2"></div>
-            <button
-              @click="showAllCurrencies"
-              class="w-full text-left px-4 py-2 text-white font-semibold"
-              style="background-color: #C71E1E;"
-            >
-              View More
             </button>
           </div>
         </div>
@@ -178,29 +180,28 @@
           <!-- Divisor -->
           <div class="my-6 border-t border-gray-200"></div>
 
-          <!-- Language & Currency Selector Mobile -->
+          <!-- Seletores Mobile -->
           <div class="space-y-4">
+            <!-- Idioma Mobile -->
             <div>
               <label class="block text-sm font-semibold text-gray-700 mb-2">Idioma</label>
-              <select
-                v-model="languageStore.selectedLanguage"
-                @change="handleLanguageChangeMobile"
-                class="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-nadine-bronze"
-              >
-                <option
-                  v-for="language in languageStore.availableLanguages"
-                  :key="language.code"
-                  :value="language.code"
-                >
-                  {{ language.flag }} {{ language.name }}
-                </option>
+              <select v-model="locale" class="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-nadine-bronze">
+                <option value="pt">Português</option>
+                <option value="en">English</option>
+                <option value="es">Español</option>
+                <option value="fr">Français</option>
+                <option value="de">Deutsch</option>
+                <option value="it">Italiano</option>
+                <option value="zh">中文</option>
               </select>
             </div>
+
+            <!-- Moeda Mobile -->
             <div>
               <label class="block text-sm font-semibold text-gray-700 mb-2">Moeda</label>
               <select
-                v-model="currencyStore.selectedCurrency"
-                @change="handleCurrencyChange"
+                :value="currencyStore.selectedCurrency"
+                @change="changeCurrency($event.target.value)"
                 class="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-nadine-bronze"
               >
                 <option
@@ -220,62 +221,57 @@
 </template>
 
 <script setup>
-import { ref, watch, onMounted } from 'vue'
+import { ref, watch, computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
-import NadineLogo from './NadineLogo.vue'
-import { usePropertyStore } from '../stores/propertyStore'
 import { useCurrencyStore } from '../stores/currencyStore'
-import { useLanguageStore } from '../stores/languageStore'
+import NadineLogo from './NadineLogo.vue'
 
 const { locale } = useI18n()
-const store = usePropertyStore()
 const currencyStore = useCurrencyStore()
-const languageStore = useLanguageStore()
 
 const showLanguageDropdown = ref(false)
 const showCurrencyDropdown = ref(false)
 const showMobileMenu = ref(false)
 
+// Inicializar o store de moedas
+onMounted(async () => {
+  await currencyStore.initialize()
+})
+
+const languages = {
+  pt: { name: 'Português', flag: '🇵🇹' },
+  en: { name: 'English', flag: '🇬🇧' },
+  es: { name: 'Español', flag: '🇪🇸' },
+  fr: { name: 'Français', flag: '🇫🇷' },
+  de: { name: 'Deutsch', flag: '🇩🇪' },
+  it: { name: 'Italiano', flag: '🇮🇹' },
+  zh: { name: '中文', flag: '🇨🇳' }
+}
+
+const currentLanguageName = computed(() => languages[locale.value]?.name || 'Português')
+const currentLanguageFlag = computed(() => languages[locale.value]?.flag || '🇵🇹')
+
+const changeLanguage = (lang) => {
+  locale.value = lang
+  showLanguageDropdown.value = false
+  localStorage.setItem('language', lang)
+}
+
 const toggleLanguageDropdown = () => {
   showLanguageDropdown.value = !showLanguageDropdown.value
-  showCurrencyDropdown.value = false // Fechar o outro dropdown
+  showCurrencyDropdown.value = false
 }
 
 const toggleCurrencyDropdown = () => {
   showCurrencyDropdown.value = !showCurrencyDropdown.value
-  showLanguageDropdown.value = false // Fechar o outro dropdown
-}
-
-const selectLanguage = (languageCode) => {
-  languageStore.setLanguage(languageCode)
-  locale.value = languageCode // Atualizar o idioma do i18n
   showLanguageDropdown.value = false
 }
 
-const handleLanguageChangeMobile = () => {
-  locale.value = languageStore.selectedLanguage
-  console.log('Idioma alterado para:', languageStore.selectedLanguage)
-}
-
-const showMoreLanguages = () => {
-  // Pode abrir um modal ou página com mais idiomas
-  alert('Funcionalidade "View More" - Adicionar mais idiomas')
-  showLanguageDropdown.value = false
-}
-
-const selectCurrency = (currencyCode) => {
+const changeCurrency = (currencyCode) => {
+  console.log('Changing currency to:', currencyCode)
   currencyStore.setCurrency(currencyCode)
   showCurrencyDropdown.value = false
-}
-
-const handleCurrencyChange = () => {
-  console.log('Moeda alterada para:', currencyStore.selectedCurrency)
-}
-
-const showAllCurrencies = () => {
-  // Pode abrir um modal ou página com mais moedas
-  alert('Funcionalidade "View More" - Adicionar mais moedas')
-  showCurrencyDropdown.value = false
+  localStorage.setItem('currency', currencyCode)
 }
 
 const toggleMobileMenu = () => {
@@ -286,6 +282,17 @@ const closeMobileMenu = () => {
   showMobileMenu.value = false
 }
 
+// Carregar idioma e moeda salvos
+const savedLanguage = localStorage.getItem('language')
+if (savedLanguage) {
+  locale.value = savedLanguage
+}
+
+const savedCurrency = localStorage.getItem('currency')
+if (savedCurrency) {
+  currencyStore.setCurrency(savedCurrency)
+}
+
 // Prevenir scroll quando o menu mobile está aberto
 watch(showMobileMenu, (newVal) => {
   if (newVal) {
@@ -293,15 +300,6 @@ watch(showMobileMenu, (newVal) => {
   } else {
     document.body.style.overflow = ''
   }
-})
-
-// Inicializar os stores
-onMounted(async () => {
-  languageStore.initialize()
-  await currencyStore.initialize()
-
-  // Sincronizar o idioma do i18n com o store
-  locale.value = languageStore.selectedLanguage
 })
 </script>
 

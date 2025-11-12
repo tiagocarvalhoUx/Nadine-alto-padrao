@@ -4,7 +4,7 @@
     "properties": "Propriedades",
     "offices": "Escritórios e Agentes",
     "franchising": "Franchising",
-    "contact": "Contacto"
+    "contact": "Contato"
   },
   "hero": {
     "title": "Encontre a sua casa de sonho",
@@ -61,6 +61,30 @@
     "vancouverBC": "Vancouver, British Columbia, Canadá",
     "modernVillaSpain": "Villa Moderna",
     "marbellaSpain": "Marbella, Málaga, España",
+    "luxuryPenthouse": "Penthouse de Luxo",
+    "manhattanNY": "Manhattan, Nova York, EUA",
+    "urbanHouse": "Casa Urbana",
+    "kensingtonLondon": "Kensington, Londres, Reino Unido",
+    "beachfrontHouse": "Casa de Praia",
+    "goldCoastAU": "Gold Coast, Queensland, Austrália",
+    "contemporaryVilla": "Villa Contemporânea",
+    "monacoFR": "Monaco, Côte d'Azur, França",
+    "panoramicApartment": "Apartamento Panorâmico",
+    "singaporeAsia": "Singapura, Ásia",
+    "luxuryCondo": "Condomínio de Luxo",
+    "kathuPhuket": "Kathu, Phuket, Tailândia",
+    "penthouse": "Penthouse",
+    "dubaiMarina": "Dubai Marina, Emirados Árabes",
+    "beachfrontVilla": "Villa à Beira-Mar",
+    "manhattanNewYork": "Manhattan, Nova York",
+    "luxuryApartmentLisbon": "Apartamento de Luxo",
+    "marvilaLisbon": "Marvila, Lisboa, Portugal",
+    "modernVillaCascais": "Vila Moderna",
+    "cascaisLisbon": "Cascais, Lisboa, Portugal",
+    "familyHomePorto": "Casa de Família",
+    "portoPortugal": "Porto, Portugal",
+    "luxuryCondoMiami": "Condomínio de Alto Padrão",
+    "miamiBeachFL": "Miami Beach, Florida",
     "desc1": "Apartamento moderno com acabamentos de luxo, localizado em uma das áreas mais valorizadas de Hamilton. Amplo living com vista panorâmica, cozinha gourmet totalmente equipada, suíte master com closet e banheira de hidromassagem.",
     "desc2": "Villa de luxo com arquitetura contemporânea, piscina infinita com vista para o mar, jardim paisagístico, garagem para 4 carros e sistema de automação residencial completo.",
     "desc3": "Condomínio fechado com segurança 24h, área de lazer completa com piscina, quadra poliesportiva, salão de festas e espaço gourmet. Apartamento com varanda ampla e vista privilegiada.",
@@ -122,5 +146,8 @@
     "byPrice": "Explore Por Preço",
     "byLifestyle": "Explore por Estilo de Vida",
     "byLocation": "Explore por Local"
+  },
+  "video": {
+    "you": "você"
   }
 }

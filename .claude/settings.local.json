@@ -10,7 +10,8 @@
       "Bash(tail:*)",
       "Bash(done)",
       "Bash(cat:*)",
-      "Bash(echo:*)"
+      "Bash(echo:*)",
+      "Bash(src/i18n.js)"
     ],
     "deny": [],
     "ask": []
