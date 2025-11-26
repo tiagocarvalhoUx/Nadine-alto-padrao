@@ -221,7 +221,7 @@ import { useCurrencyStore } from '../stores/currencyStore'
 import Navbar from '../components/Navbar.vue'
 import Footer from '../components/Footer.vue'
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const route = useRoute()
 const router = useRouter()
 const currencyStore = useCurrencyStore()
@@ -394,6 +394,11 @@ onMounted(() => {
 
 // Watch para detectar mudanças na rota e recarregar propriedade
 watch(() => route.params.id, () => {
+  loadProperty()
+})
+
+// Watch para detectar mudanças no idioma e recarregar propriedade
+watch(() => locale.value, () => {
   loadProperty()
 })
 

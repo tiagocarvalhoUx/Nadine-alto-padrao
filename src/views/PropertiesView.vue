@@ -275,6 +275,11 @@
               {{ formatPrice(property.price) }}
             </p>
 
+            <!-- Descrição -->
+            <p v-if="property.description" class="text-sm text-gray-600 mb-3 line-clamp-2">
+              {{ property.description }}
+            </p>
+
             <!-- Detalhes -->
             <div class="flex items-center gap-4 text-sm text-gray-600 mb-3">
               <span v-if="property.bedrooms">{{ property.bedrooms }} {{ $t('property.bedrooms') }}</span>
@@ -353,6 +358,7 @@ const properties = computed(() => [
   {
     id: 1,
     title: t('properties.modernApartment'),
+    description: t('properties.desc1'),
     price: 850000,
     bedrooms: 3,
     bathrooms: 2,
@@ -364,10 +370,11 @@ const properties = computed(() => [
   {
     id: 2,
     title: t('properties.modernVilla'),
+    description: t('properties.desc2'),
     price: 2500000,
     bedrooms: 5,
     bathrooms: 4,
-    location: 'Lisboa, Portugal',
+    location: t('properties.lisboaPortugal'),
     image: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800',
     badge: t('property.featured'),
     isFavorite: favoriteStates.value[2] || false
@@ -375,16 +382,18 @@ const properties = computed(() => [
   {
     id: 3,
     title: t('properties.luxuryCondo'),
+    description: t('properties.desc3'),
     price: 1200000,
     bedrooms: 4,
     bathrooms: 3,
-    location: 'Porto, Portugal',
+    location: t('properties.portoPortugal'),
     image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800',
     isFavorite: favoriteStates.value[3] || false
   },
   {
     id: 4,
     title: t('properties.detachedFamilyHome'),
+    description: t('properties.desc4'),
     price: 699900,
     bedrooms: 3,
     bathrooms: 2,
@@ -395,6 +404,7 @@ const properties = computed(() => [
   {
     id: 5,
     title: t('propertyTypes.duplex'),
+    description: t('properties.desc5'),
     price: 329900,
     bedrooms: 2,
     bathrooms: 1,
@@ -405,6 +415,7 @@ const properties = computed(() => [
   {
     id: 6,
     title: t('properties.vacantLand'),
+    description: t('properties.desc6'),
     price: 99500,
     bedrooms: 0,
     bathrooms: 0,
